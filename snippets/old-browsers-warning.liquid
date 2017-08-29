@@ -1,0 +1,42 @@
+<div class="browser-warning-wrap">
+	<div class="css-browser-detection-text browser-section">
+		<div class="browser-content">
+			{% unless settings.browser_detection_title == blank %}
+				<h5>{{ settings.browser_detection_title }}</h5>
+			{% endunless %}
+			<p>{{ settings.browser_detection_text }}</p>
+		</div>
+		<div class="css-close browser-detection-close visible-small"><a href="#">{{ 'close-icon.png' | asset_url | img_tag: 'close' }}</a></div>
+	</div>
+	<div class="browsers-links browser-section">
+		<div class="browser-wrap first ie">
+			<a href="http://windows.microsoft.com/ie" target="_blank">
+				{{ 'explorer.svg' | asset_url | img_tag: 'Download Explorer', 'icon'}}
+				<span>Download Explorer</span>
+			</a>
+		</div>
+		<div class="browser-wrap firefox">
+			<a href="http://www.mozilla.org/firefox/new/" target="_blank">
+				{{ 'firefox.svg' | asset_url | img_tag: 'Download Firefox', 'icon'}}
+				<span>Download Firefox</span>
+			</a>
+		</div>
+		<div class="browser-wrap chrome">
+			<a href="https://www.google.com/chrome/browser/desktop/" target="_blank">
+				{{ 'chrome.svg' | asset_url | img_tag: 'Download Chrome', 'icon'}}
+				<span>Download Chrome</span>
+			</a>
+		</div>
+		<div class="browser-wrap safari last">
+			<a href="http://www.apple.com/osx/" target="_blank">
+				{{ 'safari.svg' | asset_url | img_tag: 'Download Safari', 'icon'}}
+				<span>Download Safari</span>
+			</a>
+		</div>
+	</div>
+	<div class="css-close browser-detection-close visible-desktop">
+		<a href="#">
+			{{ 'close-icon.png' | asset_url | img_tag: 'close' }}
+		</a>
+	</div>
+</div>

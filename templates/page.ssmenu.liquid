@@ -1,0 +1,37 @@
+<!-- snippets/page.catering.liquid -->
+
+
+<img src="https://cdn.shopify.com/s/files/1/0640/8935/files/SLIDE_1_THR1VE_menuheader.jpg?9344718762218192441" width="100%" height="auto">
+
+    
+    
+    
+    
+    
+
+<div class="container" id="page-content">
+	<div class="row" id="page-title">
+		<div class="col-sm-12">
+			
+		</div>
+	</div>
+	<div class="row">
+		<div class="{% if settings.enable_page_sidebar %}col-sm-9{% else %}col-sm-12{% endif %}">
+			
+			{{ page.content }}
+				
+     
+                      
+                      
+                      
+                      
+                      
+		
+		{% if settings.enable_page_sidebar %}
+              
+			{% include 'page-sidebar' %}
+		{% endif %}
+		
+	</div>
+</div>
+</div>

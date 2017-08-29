@@ -1,0 +1,27 @@
+<!-- snippets/collection-list-item.liquid -->
+
+{% capture collection_title %}{{ collection.title | escape }}{% endcapture %}
+
+
+{% capture product_limit %}
+	{% if settings.product_per_row == 'col-sm-6' %}
+	2
+	{% elsif settings.product_per_row == 'col-sm-4'  %}
+	3
+	{% elsif settings.product_per_row == 'col-sm-3'  %}
+	4
+	{% elsif settings.product_per_row == 'col-sm-15'  %}
+	5
+	{% elsif settings.product_per_row == 'col-sm-2'  %}
+	6
+	{% endif %}
+{% endcapture %}
+
+<div class="col-sm-12">
+	<h2>{{ collection_title }}</h2>
+	<p><a href="{{ collection.url }}" title="{{ 'collections.general.link_title' | t: title: collection_title }}">More {{ collection_title }} &rsaquo;</a></p>
+</div>
+
+{% for product in collection.products limit: product_limit %}
+	{% include 'product-grid-item' %}
+{% endfor %}

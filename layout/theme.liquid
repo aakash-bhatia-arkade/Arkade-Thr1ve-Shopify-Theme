@@ -1,0 +1,212 @@
+{% if template contains 'article' and blog.metafields.blogfeeder.use_canonical == 'yes' %}{% assign canonical_url = article.metafields.blogfeeder.canonical %}{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    {% if settings.enable_favicon %}
+    <link rel="shortcut icon" href="{{ 'favicon.png' | asset_url }}" type="image/png" />
+    {% endif %}
+
+    <title>
+        {{ page_title }}
+        {% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}
+        {% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}
+        {% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+    </title>
+
+    <!-- Google Tag Manager -->
+    <script>
+    //<![CDATA[
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+        var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
+        j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PV8LSN5');
+    //]]>
+    </script>
+    <!-- End Google Tag Manager -->
+
+    {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {% include 'open-graph-tags' %}
+    {% include 'twitter-card' %}
+
+    {% if template contains 'collection' and current_tags %}
+        <meta name="robots" content="noindex">
+        <link rel="stylesheet" type="text/css" href="{{ shop.url }}{{ collection.url }}" />
+    {% else %}
+        <link rel="canonical" href="{{ canonical_url }}">
+    {% endif %}
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% if settings.typeface == 'google_type' %}{{ settings.google_font_code }}{% endif %}
+    {{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}
+    {{ 'style.css' | asset_url | stylesheet_tag }}
+    {{ 'owl.carousel.min.css' | asset_url | stylesheet_tag }}
+    {{ 'owl.theme.default.css' | asset_url | stylesheet_tag }}
+
+    {{ content_for_header }}
+
+    {% include 'oldIE-js' %}
+    {{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
+    {{ 'modernizr.min.js' | asset_url | script_tag }}
+    
+    {% if template contains 'customers' %}
+        {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+    {% endif %}
+  
+  <!-- Hotjar Tracking Code for http://meals.thr1ve.me -->
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:514683,hjsv:5};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+  
+
+<!-- ematic.js begin -->
+<script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['EmaticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//api.ematicsolutions.com/v1/ematic.min.js','ematics');
+
+    /* @ematic.js 464c4e3183d211e796c00242ac110002-sg5 */
+    var ematicApikey = "464c4e3183d211e796c00242ac110002-sg5";
+    var ematicOptions = {
+        email: "{{ customer.email }}",
+        shopURL:"{{ shop.url }}"
+    };
+    var ematixOptions = {
+        currency: "{{ shop.currency }}",
+        locale: "{{ shop.locale }}"
+    };
+
+    //initialize
+    ematics("create", ematicApikey, ematicOptions);
+</script>
+<!-- ematic.js end -->
+</head>
+
+
+<body id="{{ page_title | handle }}" {% if template contains 'index' %}class="index"{% else %}class="not-index"{% endif %}>
+
+    <!--[if lt IE 10]>
+        {% if settings.enable_browser_detection %}
+        <div class="browser-detection-warning hide">
+            {% include 'old-browsers-warning' %}
+        </div>
+    {% endif %}
+    <![endif]-->
+
+    {% comment %} Main Nav {% endcomment %}
+    {% include 'nav-menu' %}
+    {% include 'nav-menu-green' %}
+
+    <!-- Off-canvas Element 1 -->
+    <nav id="slideInMenu" class="offside">
+        <div class="slide-in-menu-header">
+            <a class="slide-in-menu-close" href="javascript:void(0)"><i class="fa fa-angle-right"></i></a>
+            <h1>Your Order</h1>
+            <span class="header-cart-icon cart-items">
+                <span class="cart-count-wrap"><span class="cart-count">20</span></span>
+            </span>
+        </div>
+        <div id="CartContainer"></div>
+    </nav>
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PV8LSN5" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+  
+  	<!-- <div class="text-banner-top">
+  		<h3>Fresh Ready Meals</h3>
+        <p>{{ settings.collection_text_banner }}</p>
+	</div> -->
+
+    <div id="container" class="layout-container">      
+      
+            {% unless template contains 'product' %}
+      			{% unless template == 'search'%}
+      				{% unless template contains 'customers'%}
+      					{% unless template contains 'page' %}
+      						{% unless template contains 'collection' %}
+      							{% unless template contains 'blog' %}
+                					{% include 'collection-banners' %}
+      							{% endunless %}
+      						{% endunless %}
+      					{% endunless %}
+      				{% endunless %}
+      			{% endunless %}
+            {% endunless %}
+        {{ content_for_layout }}
+      	{% include 'footer' %}
+    </div>
+    
+    {% comment %}<a class="hide" href="#" data-popup-open="popup-content">Open Popup</a>
+    <div class="popup" data-popup="popup-content">
+        <div class="popup-inner">
+            <p>{{ settings.clear_cart_warning }}</p>
+            <a class="popup-close" href="#" data-popup-close="popup-content">
+                {{ 'close-icon-white.png' | asset_url | img_tag }}
+            </a>
+        </div>
+    </div>{% endcomment %}
+
+    {{ 'bootstrap.min.js' | asset_url | script_tag }}
+    {% include 'ajax-cart-template' %}
+    {{ 'ajax-cart.js' | asset_url | script_tag }}
+	{{ 'ajax-config.js' | asset_url | script_tag }}
+    {{ 'owl.carousel.min.js' | asset_url | script_tag }}
+    {{ 'jquery.txfunctions.js' | asset_url | script_tag }}
+    {{ 'jquery.waypoints.min.js' | asset_url | script_tag }}
+    <script>
+        jQuery(function($) {
+            ajaxCart.init({
+                formSelector: '#AddToCartForm',
+                cartContainer: '#CartContainer',
+                addToCartSelector: '#AddToCart',
+                cartCountSelector: '#CartCount',
+                cartCostSelector: '#CartCost',
+                moneyFormat: {{ shop.money_format | json }}
+            });
+
+            ajaxCart.load();
+        });
+    </script>
+
+    <!-- # checkStorageSupport module has storageAvailable function to check whether localStorage/sessionStorage is supported # -->
+    <!-- # convertStringToArray module has postcodeList function to convert a postcode list string to an array # -->
+    {{ 'js-module-check-storage-support.js' | asset_url | script_tag }}
+
+  {% include 'modify_lightbox_snippet' %}
+
+  {% comment %}              
+  {% include 'subscription-theme-footer' %}
+  {% endcomment %}
+
+  {% include 'rollover_messaging' %}
+  
+  {% if template == 'index' %}
+  	<script type="text/javascript" src="//jp-tags.mediaforge.com/js/6346"></script>
+  {% elsif product %}
+  	<script type="text/javascript" src="https://jp-tags.mediaforge.com/js/6346/?prodID={{product.handle}}"></script> 
+  {% elsif collection %}
+  	<script type="text/javascript" src="https://jp-tags.mediaforge.com/js/6346/?catID={{collection.handle}}"></script> 
+  {% endif %}
+  
+  <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+  {% include 'zip-widget' %}
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!-- templates/page.liquid -->
+
+<table height="auto" width="100%"
+ background="https://cdn.shopify.com/s/files/1/0640/8935/files/THR1VE_AWmenu_header.jpg?5316464583181685796" >
+<tr><td><BR><BR><BR><BR><BR><BR><BR><center>
+<h2 style="text-align: center; font-size: 40px; line-height: 35px; font-weight: 200; color:#ffffff;"><strong>AUTUMN / WINTER 2015 MENU</strong></h2>
+<h2 style="text-align: center; font-size: 16px; line-height: 18px; font-weight: 200; color:#ffffff;">Powered by locally sourced proteins and seasonal produce, our entire menu is always gluten free, has no added sugar, and is always cooked fresh to your order.</h2>
+</center><BR><BR><BR><BR><BR><BR><BR><BR><BR></td></tr>
+</table>
+
+
+<div class="container" id="page-content">
+	<div class="row" id="page-title">
+		<div class="col-sm-12">
+			
+		</div>
+	</div>
+	<div class="row">
+		<div class="{% if settings.enable_page_sidebar %}col-sm-9{% else %}col-sm-12{% endif %}">
+			{{ page.content }}
+		</div>
+		
+		{% if settings.enable_page_sidebar %}
+			{% include 'page-sidebar' %}
+		{% endif %}
+		
+	</div>
+</div>

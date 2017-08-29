@@ -1,0 +1,148 @@
+<!-- templates/article.liquid -->
+
+{% assign number_of_comments = article.comments_count %}
+
+{% if comment and comment.created_at %}
+  {% assign number_of_comments = article.comments_count | plus: 1 %}
+{% endif %}
+
+
+<div class="container" id="page-content">
+	<div class="row" id="page-title">
+		<div class="col-sm-12">
+			<h1>{{ article.title }}</h1>
+		</div>
+	</div>
+	<div class="row">
+		
+		<div class="{% if settings.enable_blog_sidebar %}col-sm-9{% else %}col-sm-12{% endif %}">
+			<article>
+				<div class="article-title">
+					{% capture author %}<strong>{{ article.author }}</strong>{% endcapture %}
+					{% capture date %}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time>{% endcapture %}
+					<p>
+						{% if settings.show_author %}
+							{{ 'blogs.article.author_on_date_html' | t: author: author, date: date }}
+						{% endif %}
+						{% if blog.comments_enabled? %}
+							{% if settings.show_comment_count %}
+								{% if settings.show_author %} | {% endif %}
+								<a href="{{ article.url }}#Comments">{{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}</a>
+							{% endif %}
+						{% endif %}
+						{% if settings.show_article_tags %}
+							{% if article.tags.size > 0 %}
+								 {% if settings.show_comment_count %} | {% endif %} 
+								 {{ 'blogs.article.tags' | t }}:
+								 {% for tag in article.tags %} <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+								 {% unless forloop.last %}, {% endunless %}
+								 {% endfor %}
+							{% endif %}
+						{% endif %}
+					</p>
+				</div>
+				
+				<div class="article-content">
+					{{ article.content }}
+				</div>
+
+			</article>
+			
+			<div class="social-share text-center">
+				{% capture shareurl %}{{ shop.url }}{{ article.url }}{% endcapture %}
+				<ul class="list-inline">
+					<li><a href="//www.facebook.com/sharer.php?u={{ shareurl }}&t={{ article.title }}"><i class="fa fa-facebook"></i></a></li>
+					<li><a href="//twitter.com/home?status=Check%20out%20this%20blog%20post:+{{ shareurl }}"><i class="fa fa-twitter"></i></a></li>
+					<li><a href="//pinterest.com/pin/create/button/?url={{ shareurl }}&media={{ product.featured_image | product_img_url: 'original' }}&description={{ product.title | strip_html | escape | replace: ' ', '%20' }}"><i class="fa fa-pinterest"></i></a></li>
+					<li><a href="//plus.google.com/share?url={{ shareurl }}" onclick="javascript:window.open(this.href,  '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fa fa-google-plus"></i></a></li>
+					<li><a href="mailto:?subject={{ article.title }}&body=Check out this blog post: {{ shareurl }}"><i class="fa fa-envelope"></i></a></li>
+				</ul>
+			</div>
+			
+			<div class="next-previous {% if blog.previous_article %}{% else %}text-right{% endif %}">
+				{% if blog.previous_article %}
+					{{ 'blogs.article.older_post' | t | link_to: blog.previous_article }}
+				{% endif %}
+				{% if blog.next_article %}
+					<span {% if blog.previous_article %}class="pull-right"{% endif %}>{{ 'blogs.article.newer_post' | t | link_to: blog.next_article }}</span>
+				{% endif %}
+			</div>
+
+
+
+			{% if blog.comments_enabled? %}
+				<div id="comments">
+					
+					{% if number_of_comments > 0 %}
+					<h3>{{ 'blogs.comments.comments_with_count' | t: count: number_of_comments }}</h3>		
+					{% endif %}
+
+					{% paginate article.comments by 10 %}
+
+						{% if comment and comment.created_at %}
+							<p class="alert bg-success">
+								{% if blog.moderated? %}
+									{{ 'blogs.comments.success_moderated' | t }}
+								{% else %}
+									{{ 'blogs.comments.success' | t }}
+								{% endif %}
+        					</p>
+						{% endif %}
+    
+						{% if number_of_comments > 0 %}
+							{% if comment and comment.created_at %}
+								<div class="comment" id="{{ comment.id }}">
+								{% include 'comment' %}
+								</div>
+							{% endif %}
+							
+							{% for comment in article.comments %}
+								<div class="comment" id="{{ comment.id }}">
+									{% include 'comment' %}
+								</div>
+							{% endfor %}
+						
+							{% if paginate.pages > 1 %}
+								{% include 'pagination-custom' %}
+							{% endif %}
+						{% endif %}
+    
+						{% form 'new_comment', article %}
+							
+							<h3 id="AddCommentTitle">{{ 'blogs.comments.title' | t }}</h3>
+							
+							{{ form.errors | default_errors }}
+							
+							<div class="form-group{% if form.errors contains "author" %} has-error{% endif %}">
+						    	<label for="CommentAuthor">{{ 'blogs.comments.name' | t }}</label>
+								<input class="form-control" type="text" name="comment[author]" placeholder="{{ 'blogs.comments.name' | t }}" id="CommentAuthor" value="{{ form.author }}" autocapitalize="words">
+							</div>
+							
+							<div class="form-group{% if form.errors contains "email" %} has-error{% endif %}">
+						    	<label for="CommentEmail">{{ 'blogs.comments.email' | t }}</label>
+								<input class="form-control" type="email" name="comment[email]" placeholder="{{ 'blogs.comments.email' | t }}" id="CommentEmail" value="{{ form.email }}" autocorrect="off" autocapitalize="off">
+							</div>
+							
+							<div class="form-group{% if form.errors contains "body" %} has-error{% endif %}">
+						    	<label for="CommentBody">{{ 'blogs.comments.message' | t }}</label>
+								<textarea  class="form-control" name="comment[body]" id="CommentBody" placeholder="{{ 'blogs.comments.message' | t }}" rows="5">{{ form.body }}</textarea>
+							</div>
+							
+							{% if blog.moderated? %}
+							<p>{{ 'blogs.comments.moderated' | t }}</p>
+							{% endif %}
+							
+							<input type="submit" class="btn" value="{{ 'blogs.comments.post' | t }}">
+
+						{% endform %}
+					{% endpaginate %}
+				</div>
+			{% endif %}	
+		</div>
+		
+		{% if settings.enable_blog_sidebar %}
+			{% include 'blog-sidebar' %}
+		{% endif %}
+		
+	</div>
+</div>

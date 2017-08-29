@@ -1,0 +1,176 @@
+{% comment %}
+This snippet accepts a parameter while including in any other files
+enable_close_btn, which show/hide the close(x) symbol
+{% endcomment %}
+
+
+
+
+<div class="postcode-validation-header">
+	<div class="container">
+		<div class="row">
+			{% if enable_close_btn %}
+			<div class="col-xs-10 col-sm-5">
+			{% else %}
+			<div class="col-xs-12 col-sm-6">
+			{% endif %}
+				<div class="postcode-message">
+					<p class="postcode-primary-message"></p>
+					<p class="postcode-secondary-message"></p>
+				</div>
+				<div class="postcode-change-wrap">
+					<p class="postcode-change css-hide-section"><a href="#">Change</a></p>
+				</div>
+			</div>
+			{% if enable_close_btn %}
+			<div class="col-xs-2 col-sm-1 pull-right">
+				<div class="banner-close">
+					<a href="javascript:void">X</a>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-5 col-sm-offset-1 secondary-section">
+			{% else %}
+			<div class="col-xs-12 col-sm-6 secondary-section">
+			{% endif %}
+				<div class="postcode-check css-secondary-section">
+					<div class="postcode-content form-group">
+						<input type="text" name="postcode" value="" class="area-postcode form-control" maxlength="4" placeholder="Enter your postcode" />
+					</div>
+					<button type="button" class="btn btn-secondary check-location">Check Location</button>
+				</div>
+				<div class="email-check css-secondary-section css-hide-section">
+					<div class="email-content form-group">
+						<input type="text" name="postcode-email" value="" class="postcode-email form-control" placeholder="Enter your email" />
+					</div>
+					<button type="button" class="btn btn-secondary">Let me know</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- # checkStorageSupport module has storageAvailable function to check whether localStorage/sessionStorage is supported # -->
+{{ 'js-module-check-storage-support.js' | asset_url | script_tag }}
+
+<!-- # convertStringToArray module has postcodeList function to convert a postcode list string to an array # -->
+{{ 'js-module-postcodes-string-array.js' | asset_url | script_tag }}
+
+<!-- # convertStringToArray module has postcodeList function to convert a postcode list string to an array # -->
+{{ 'js-module-postcode-city.js' | asset_url | script_tag }}
+<script type="text/javascript">
+ 
+	(function($) {
+		$(function() {
+			var postcodesString = '{{ settings.area_postcodes_list }}',//Get all the postcodes from shopify admin area
+				postCodesArray = convertStringToArray.postcodeList(postcodesString), //Get the array of postcodes from a string
+				errorPrimaryMessage = "{{ settings.postcode_validation_error_primary_message }}",
+				errorSecondaryMessage = "{{ settings.postcode_validation_error_secondary_message }}",
+				successPrimaryMessage = "{{ settings.postcode_validation_success_primary_message }}",
+				successSecondaryMessage = "{{ settings.postcode_validation_success_secondary_message }}",
+				intialPrimaryMessage = "{{ settings.postcode_initial_primary_message }}",
+				intialSecondaryMessage = "{{ settings.postcode_initial_secondary_message }}",
+				cityPostcode = '';
+
+			$('.postcode-message > .postcode-primary-message').html(intialPrimaryMessage);
+			$('.postcode-message > .postcode-secondary-message').html(intialSecondaryMessage);
+
+			//Check whether localStorage is supported
+			if(checkStorageSupport.storageAvailable('localStorage'))
+			{
+				//Check whether the postcode header banner is closed
+				if(! localStorage.hasOwnProperty('hasPostcodeHeaderBanner'))
+				{
+					localStorage.setItem('hasPostcodeHeaderBanner', 'true');
+				}
+
+				if(localStorage.getItem('hasPostcodeHeaderBanner') == 'true')
+				{
+					//Check whether session is set and is true
+					if(localStorage.hasOwnProperty('hasValidatedPostCode'))
+					{
+						sessionPrimaryMessage = errorPrimaryMessage;
+						sessionSecondaryMessage = errorSecondaryMessage;
+						if(localStorage.getItem('hasValidatedPostCode') == 'true')
+						{
+							sessionPrimaryMessage = successPrimaryMessage;
+							sessionSecondaryMessage = successSecondaryMessage;
+						} else {
+							$('.postcode-validation-header .postcode-check').hide();
+							$('.postcode-validation-header .email-check').removeClass("css-hide-section").addClass("css-show-section");//Change email section class names
+							$('.postcode-validation-header .postcode-change').removeClass("css-hide-section").addClass("css-show-section");//Change change link class names
+						}
+
+						//Clear any data
+						$('.postcode-message > .postcode-primary-message, .postcode-message > .postcode-secondary-message').html();
+
+						if(localStorage.hasOwnProperty('cityAndPostcode'))
+						{
+							cityPostcode = localStorage.getItem('cityAndPostcode');
+						}
+
+						//Add status message
+						$('.postcode-message > .postcode-primary-message').html(sessionPrimaryMessage + ' ' + cityPostcode);
+						$('.postcode-message > .postcode-secondary-message').html(sessionSecondaryMessage);
+					}
+				}
+			}
+
+			/* Postcode submit event */
+			$('button.check-location').on('click', function() {
+				var $this = $(this),
+					postcode = $('.area-postcode').val().toString(),
+					city = '',
+					cityPostcode = ' this postcode ' + postcode;
+
+				statusPrimaryMessage = errorPrimaryMessage;
+				statusSecondaryMessage = errorSecondaryMessage;
+
+				/* Get city name from postcode */
+				city = postcodeToCity.getCity(postcode);console.log(city);
+				if(city != '')
+				{
+					cityPostcode = city + ', ' + postcode;
+				}
+
+				localStorage.setItem('cityAndPostcode', cityPostcode);
+
+				//Check whether a postcode exists in the postcode array from above.
+				if($.inArray(postcode, postCodesArray) != -1)
+				{
+					statusPrimaryMessage = successPrimaryMessage;
+					statusSecondaryMessage = successSecondaryMessage;
+					localStorage.setItem('hasValidatedPostCode', 'true');
+				} else {
+					localStorage.setItem('hasValidatedPostCode', 'false');
+					$('.postcode-validation-header .postcode-check').hide();//Change postcode section class names
+					$('.postcode-validation-header .email-check').removeClass("css-hide-section").addClass("css-show-section");//Change email section class names
+					$('.postcode-validation-header .postcode-change').removeClass("css-hide-section").addClass("css-show-section");//Change link(change) class names
+				}
+
+				//Clear any data
+				$('.postcode-message > .postcode-primary-message, .postcode-message > .postcode-secondary-message').html();
+
+				//Add status message
+				$('.postcode-message > .postcode-primary-message').html(statusPrimaryMessage +' '+ cityPostcode);
+				$('.postcode-message > .postcode-secondary-message').html(statusSecondaryMessage);
+
+			});
+
+			/* Close button for Postcode validation header */
+			$('.banner-close a').on('click', function() {
+				$('.postcode-validation-header').hide();
+				localStorage.setItem('hasPostcodeHeaderBanner', 'false');
+			});
+
+			//Clear all the localStorage data
+			$('.postcode-change > a').on('click', function(e) {
+				e.preventDefault();
+
+				//Clear all data from localStorage
+				localStorage.clear();
+
+				location.reload();
+			});
+		});
+	})(jQuery);
+</script>

@@ -1,0 +1,28 @@
+{% comment %} Add labels into an array {% endcomment %}
+{% assign nutriInfoLabels = "pro|fat|carbs"| split: "|" %}
+
+{% comment %} Capture the values of the labels above. It creates a string with all the values and pipes between them {% endcomment %}
+{% capture nutriInfo %}{{ product.metafields.text.protein_perserve }}|{{ product.metafields.text.fat_perserve }}|{{ product.metafields.text.carbs_perserve }}{% endcapture %}
+
+{% comment %} Convert the captured data into an array {% endcomment %}
+{% assign nutriInfoVals = nutriInfo | split: "|" %}
+
+{% comment %} Get the size of the array {% endcomment %}
+{% assign sizeOfLabelsArray = nutriInfoLabels | size %}
+
+{% comment %} Loop through labels and get the data related to the labels {% endcomment %}
+{% for nutriItem in nutriInfoLabels %}
+	{% assign itemClass = '' %}
+	{% if forloop.index == 1 %}
+		{% assign itemClass = ' first' %}
+	{% endif %}
+	
+	{% if forloop.index == sizeOfLabelsArray %}
+		{% assign itemClass = ' last' %}
+	{% endif %}
+
+	<div class="info-{{ forloop.index }} info{{ itemClass }}">
+		<p class="label">{{ nutriItem }}</p>
+		<p class="val">{{ nutriInfoVals[forloop.index0] }}</p>
+	</div>
+{% endfor %}

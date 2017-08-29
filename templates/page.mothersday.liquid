@@ -1,0 +1,22 @@
+<!-- templates/page.liquid -->
+
+<img src="https://cdn.shopify.com/s/files/1/1529/8583/files/THR1VE_mothersday_top.jpg?14343408507214098241" width="100%">
+
+
+<div class="container" id="page-content">
+	<div class="row" id="page-title">
+		<div class="col-sm-12">
+			
+		</div>
+	</div>
+	<div class="row">
+		<div class="{% if settings.enable_page_sidebar %}col-sm-9{% else %}col-sm-12{% endif %}">
+			{{ page.content }}
+		</div>
+		
+		{% if settings.enable_page_sidebar %}
+			{% include 'page-sidebar' %}
+		{% endif %}
+		
+	</div>
+</div>

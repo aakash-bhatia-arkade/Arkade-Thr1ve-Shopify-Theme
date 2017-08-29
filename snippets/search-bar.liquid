@@ -1,0 +1,21 @@
+<!-- snippets/search-bar.liquid -->
+
+<div class="row">
+	<div class="col-sm-6">
+		<form action="/search" method="get" role="search" id="search-form">
+			
+			<!-- remove {% comment %} and {% endcomment %} to only search products -->
+			{% comment %}<input type="hidden" name="type" value="product">{% endcomment %}
+			
+			<div class="form-group">
+				<input type="search" id="search-box" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" class="form-control" aria-label="{{ 'general.search.placeholder' | t }}">
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn">
+					<span class="icon icon-search" aria-hidden="true"></span>
+					<span class="fallback-text">{{ 'general.search.submit' | t }}</span>
+				</button>
+			</div>
+		</form>
+	</div>
+</div>

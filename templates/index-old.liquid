@@ -1,0 +1,35 @@
+<!-- templates/index.html -->
+
+{% include 'carousel' %}
+
+{% if template != 'index' %}
+	<div class="container">
+		{% if settings.collections_index != blank %}
+		<div class="row spacer">
+			{% for link in linklists[settings.collections_index].links %}
+				<div class="{{ settings.collections_index_per_row }} collections_index">
+					{% if link.type == 'collection_link' %}
+						<a href="{{ link.url }}">
+							{% assign collection = link.object %}
+							{% if collection.image %}
+								<img src="{{ collection.image.src | collection_img_url: 'large' }}" alt="{{ collection.image.alt | escape }}" class="img-responsive" />
+							{% else %}
+								<img src="{{ collection.products.first.featured_image.src | product_img_url: 'large' }}"alt="{{ collection.title | escape }}" class="img-responsive" />
+							{% endif %}
+						</a>
+					{% endif %}
+				</div>
+			{% endfor %}
+		</div>
+		{% endif %}
+		
+		{% if settings.product_index != blank %}
+		<div class="row{% if settings.collections_index != blank %}{% else %} spacer{% endif %}">
+			{% assign collection = collections.[settings.product_index] %}
+			{% for product in collection.products %}
+	    		{% include 'product-grid-item' %}
+			{% endfor %}
+		</div>
+		{% endif %}
+	</div>
+{% endif %}

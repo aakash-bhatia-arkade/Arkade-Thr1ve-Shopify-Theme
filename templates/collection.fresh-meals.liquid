@@ -1,0 +1,130 @@
+<!-- Fresh Ready Collection Custom -->
+<div class="fresh-ready-meals-collection">
+	{% include 'fresh-meals-anchor-nav' %}
+	<div class="collection-group">
+		<span class="anchor-offset" id="collection-lunchdinner"></span>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<h2>Lunch & Dinner</h2>
+				</div>
+			</div>
+			<div class="cg-products">
+				{% assign collection = collections.Lunch-Dinner %}
+			    <div class="row">
+				    {% for product in collection.products %}
+				    	{% include 'product-grid-item', productPerRow: settings.product_per_row %}
+				    {% endfor %}
+			    </div>
+		    </div>
+		    <div class="row" style="display:none;">
+		    	<div class="col-sm-12">
+		    		<div class="cg-footer">
+		    			<a class="btn-green" href="#">View All</a>	
+		    		</div>
+		    	</div>
+		    </div>
+	    </div>
+    </div>
+    <div class="collection-group">
+    	<span class="anchor-offset" id="collection-breakfast"></span>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<h2>Breakfast</h2>
+				</div>
+			</div>
+			<div class="cg-products">
+				{% assign collection = collections.breakfast %}
+			    <div class="row">
+				    {% for product in collection.products %}
+				    	{% include 'product-grid-item', productPerRow: settings.product_per_row %}
+				    {% endfor %}
+			    </div>
+		    </div>
+		    <div class="row" style="display:none;">
+		    	<div class="col-sm-12">
+		    		<div class="cg-footer">
+		    			<a class="btn-green" href="#">View All</a>	
+		    		</div>
+		    	</div>
+		    </div>
+	    </div>
+    </div>
+    <div class="collection-group">
+    	<span class="anchor-offset" id="collection-snacks"></span>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<h2>Snacks</h2>
+				</div>
+			</div>
+			<div class="cg-products">
+				{% assign collection = collections.snacks %}
+			    <div class="row">
+				    {% for product in collection.products %}
+				    	{% include 'product-grid-item', productPerRow: settings.product_per_row %}
+				    {% endfor %}
+			    </div>
+		    </div>
+		    <div class="row" style="display:none;">
+		    	<div class="col-sm-12">
+		    		<div class="cg-footer">
+		    			<a class="btn-green" href="#">View All</a>	
+		    		</div>
+		    	</div>
+		    </div>
+	    </div>
+    </div>
+    <div class="collection-group">
+    	<span class="anchor-offset" id="collection-drinks"></span>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<h2>Drinks</h2>
+				</div>
+			</div>
+			<div class="cg-products">
+				{% assign collection = collections.drinks %}
+			    <div class="row">
+				    {% for product in collection.products %}
+				    	{% include 'product-grid-item', productPerRow: settings.product_per_row %}
+				    {% endfor %}
+			    </div>
+		    </div>
+		    <div class="row" style="display:none;">
+		    	<div class="col-sm-12">
+		    		<div class="cg-footer">
+		    			<a class="btn-green" href="#">View All</a>	
+		    		</div>
+		    	</div>
+		    </div>
+	    </div>
+    </div>
+    <div class="collection-group" style="display:none !important">
+    	<span class="anchor-offset" id="collection-gifts"></span>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<h2>Gifts</h2>
+				</div>
+			</div>
+			<div class="cg-products">
+				{% assign collection = collections.gifts %}
+			    <div class="row">
+				    {% for product in collection.products %}
+				    	{% include 'product-grid-item', productPerRow: settings.product_per_row %}
+				    {% endfor %}
+			    </div>
+		    </div>
+		    <div class="row" style="display:none;">
+		    	<div class="col-sm-12">
+		    		<div class="cg-footer">
+		    			<a class="btn-green" href="#">View All</a>	
+		    		</div>
+		    	</div>
+		    </div>
+	    </div>
+    </div>
+
+</div>

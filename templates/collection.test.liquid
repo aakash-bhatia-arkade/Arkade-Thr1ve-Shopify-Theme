@@ -1,0 +1,148 @@
+<!-- Collections -->
+
+{% paginate collection.products by settings.product_paginate %}
+
+<div class="container" id="page-content">
+
+	{% if settings.collection_sidebar %}
+		<div class="row">
+			{% include 'collection-sidebar' %}
+			<div class="col-xs-12 col-sm-12 col-md-9">
+	{% endif %}
+
+				{% if collection.description != blank %}
+				<div class="row">
+					<div class="col-md-12" id="collection-description">
+						{{ collection.description }}
+					</div>
+				</div>
+				{% endif %}
+				
+				{% if settings.enable_sorting_views %}
+				<div class="row" id="collection-sorting">
+					<div class="hidden-xs hidden-sm col-sm-8 col-sm-offset-4 col-lg-5 col-lg-offset-7">
+						<div class="row">
+							<div class="col-sm-12">{% include 'collection-sorting' %}</div>
+						</div>
+					</div>
+
+					<div id="collection-filter-modal" class="modal fade collection-modal" tabindex="-1" role="dialog">
+						<div class="modal-wrap">
+							{% assign container_class = 'modal-filter' %}
+							{% assign checkbox_class = 'modal' %}
+							{% comment %}
+							Check whether the collection has any sub collections
+							{% endcomment %}
+							{% if linklists.fresh-ready-meals.links.size > 0 %}
+								<ul class="list-unstyled css-ul-list modal-list">
+									{% comment %}
+									Loop through the linklists based on the collection. Get all the sub collections from collectio handle
+									{% endcomment %}
+									{% for link in linklists.fresh-ready-meals.links %}
+										<li {% if link.active %}class="active"{% endif %}><a href="{{ link.url }}">{{ link.title }}</a></li>
+									{% endfor %}
+								</ul>
+							{% endif %}
+							{% include 'collection-filters' %}
+						</div>
+					</div>
+
+					<div id="collection-sort-modal" class="modal fade collection-modal" tabindex="-1" role="dialog">
+						<div class="modal-wrap">
+							{% include 'collection-sorting' %}
+						</div>
+					</div>
+
+					<div class="visible-xs visible-sm filter-sorting-wrap">
+						<button type="button" class="btn btn-default css-js-filter-btn left-btn"
+						 data-toggle="modal" data-target="#collection-filter-modal"
+						  data-modal-title="Filter" data-modal-footer-flag=true>Filters</button>
+
+						<button type="button" class="btn btn-default css-js-sort-btn right-btn"
+						 data-toggle="modal" data-target="#collection-sort-modal"
+						  data-modal-title="Sort">Sort</button>
+
+					</div>
+				</div>
+				{% endif %}
+			
+			    <div class="row">
+				    {% for product in collection.products %}
+				    	{% assign variant = product.selected_or_first_available_variant %}
+				    	{% include 'product-grid-item', productPerRow: settings.product_per_row %}
+				    {% else %}
+				    	<div class="col-md-12">
+					    	<p>{{ 'collections.general.no_matches' | t }}</p>
+				    	</div>
+				    {% endfor %}
+			    </div>
+			
+				{% if paginate.pages > 1 %}
+					{% include 'pagination-custom'  %}
+				{% endif %}
+	{% if settings.collection_sidebar %}
+			</div>
+		</div>
+	{% endif %}
+</div>
+
+{% endpaginate %}
+
+<script type="text/javascript">
+	(function($) {
+		$(function() {
+			//Filter Modal Window
+			$('#collection-filter-modal').on('show.bs.modal', function(event) {
+				var modal = $(this),
+					button = $(event.relatedTarget),
+					modalTitle = button.data('modalTitle'),
+					modalFooterFlag = button.data('modalFooterFlag'),
+					filterWrap = modal.find('.filter-wrap');
+					subCollectionsList = modal.find('.modal-list');
+
+				modal.find('.modal-header').remove();
+				modal.find('.modal-footer').remove();
+
+				title = '<div class="modal-header">'
+					        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+					        + '<h2 class="modal-title">'+ modalTitle +'</h2>'
+					      + '</div>';
+
+				subCollectionsList.before(title);
+				if(modalFooterFlag && typeof(modalFooterFlag) !== undefined)
+				{
+					footer = '<div class="modal-footer">'
+								+ '<a href="#" class="btn btn-primary filter-btn">Apply Filters</a>'
+							+ '</div>';
+					filterWrap.after(footer);
+				}
+			});
+
+			//Sort modal Window
+			$('#collection-sort-modal').on('show.bs.modal', function(event) {
+				var modal = $(this),
+					button = $(event.relatedTarget),
+					modalTitle = button.data('modalTitle'),
+					modalFooterFlag = button.data('modalFooterFlag'),
+					filterWrap = modal.find('#sort');
+
+				modal.find('.modal-header').remove();
+				modal.find('.modal-footer').remove();
+
+				title = '<div class="modal-header">'
+					        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+					        + '<h2 class="modal-title">'+ modalTitle +'</h2>'
+					      + '</div>';
+
+				filterWrap.before(title);
+				if(modalFooterFlag && typeof(modalFooterFlag) !== undefined)
+				{
+					footer = '<div class="modal-footer">'
+								+ '<button type="button" class="btn btn-primary">Sort</button>'
+							+ '</div>';
+					filterWrap.after(footer);
+				}
+			});
+		});
+	})(jQuery);
+</script>

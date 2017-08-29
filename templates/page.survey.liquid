@@ -1,0 +1,28 @@
+<!-- snippets/page.contactform.liquid -->
+
+<img src="https://cdn.shopify.com/s/files/1/0640/8935/files/THR1VE_sayhello_c0eaba67-94a5-447c-b5bb-f393c281dbf7.jpg?5500211368436049708" width="100%" height="auto">
+
+<div class="container" id="page-content">
+	<div class="row" id="page-title">
+		<div class="col-sm-12">
+			
+		</div>
+	</div>
+	<div class="row">
+		<div class="{% if settings.enable_page_sidebar %}col-sm-9{% else %}col-sm-12{% endif %}">
+			
+			{{ page.content }}
+				
+			<div class="row">
+				<div class="col-sm-12">
+				
+				</div>
+			</div>
+		</div>
+		
+		{% if settings.enable_page_sidebar %}
+			{% include 'page-sidebar' %}
+		{% endif %}
+		
+	</div>
+</div>

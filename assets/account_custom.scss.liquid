@@ -1,0 +1,86 @@
+#account_subscriptions{
+  #active_subscriptions{
+    display: none;
+  	list-style: none;
+  	margin: 0;
+  	padding: 0;
+
+  	li{
+  		position: relative;
+  		padding: 20px;
+  		box-shadow: 0 3px 10px 0 rgba(0,0,0,0.2);
+  		margin: 0 0 10px;
+      &:after{
+      	content:'';
+        display: block;
+        clear: both;
+      }
+  	}
+
+  	h4{
+  		font-weight: 400;
+  		margin: 10px 0 25px;
+  	}
+
+  	h5{
+  		font-weight: 400;
+  		color: #aaa;
+  		font-size: 12px;
+  		text-transform: uppercase;
+  		letter-spacing: 1px;
+  		margin: 0 0 8px;
+  	}
+
+    p{
+    	margin: 0;
+      	font-size: 14px;
+    }
+
+  	.cancel_plan{
+  		position: absolute;
+  		top: 25px;
+  		right: 20px;
+  		text-transform: uppercase;
+  		text-decoration: underline;
+      	font-size: 14px;
+    	letter-spacing: 1px;
+      	color: #000;
+
+      	&:hover{
+          cursor: pointer;
+          opacity: 0.5;
+        }
+  	}
+
+    .subscription_details{
+      @media(min-width: 768px){
+      	width: 82%;
+        padding-left: 20px;
+        float: left;
+      }
+    }
+
+    .subscription_image{
+      	background: #eee center center no-repeat;
+      	background-size: cover;
+      	position: relative;
+
+        &:before{
+          content: '';
+          display: block;
+          padding: 56.25% 0 0;
+        }
+
+      @media(min-width: 768px){
+      	width: 18%;
+        float: left;
+      }
+    }
+
+    .col-xs-6{
+    	@media(max-width: 767px){
+          margin-bottom: 10px;
+      	}
+    }
+  }
+}

@@ -1,0 +1,354 @@
+{% if template contains 'article' and blog.metafields.blogfeeder.use_canonical == 'yes' %}{% assign canonical_url = article.metafields.blogfeeder.canonical %}{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	{% if settings.enable_favicon %}
+	<link rel="shortcut icon" href="{{ 'favicon.png' | asset_url }}" type="image/png" />
+	{% endif %}
+
+	<title>
+        {{ page_title }}
+        {% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}
+        {% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}
+        {% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+    </title>
+
+    <!-- Google Tag Manager -->
+    <script>
+    //<![CDATA[
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+        var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
+        j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PV8LSN5');
+    //]]>
+    </script>
+    <!-- End Google Tag Manager -->
+
+	{% if page_description %}
+	<meta name="description" content="{{ page_description | escape }}">
+	{% endif %}
+
+	{% include 'open-graph-tags' %}
+	{% include 'twitter-card' %}
+
+    {% if template contains 'collection' and current_tags %}
+        <meta name="robots" content="noindex">
+        <link rel="stylesheet" type="text/css" href="{{ shop.url }}{{ collection.url }}" />
+    {% else %}
+        <link rel="canonical" href="{{ canonical_url }}">
+    {% endif %}
+	
+	
+  {% comment %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% endcomment %}
+
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	{% if settings.typeface == 'google_type' %}{{ settings.google_font_code }}{% endif %}
+    {{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}
+    {{ 'style.css' | asset_url | stylesheet_tag }}
+    {{ 'media-queries.css' | asset_url | stylesheet_tag }}
+
+	{{ content_for_header }}
+
+    {% include 'oldIE-js' %}
+    {{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
+    {{ 'modernizr.min.js' | asset_url | script_tag }}
+
+    {{ 'offside.css' | asset_url | stylesheet_tag }}
+    {{ 'offside.min.js' | asset_url | script_tag }}
+    <meta name="google-site-verification" content="gbLTMBZpFs-Wjwi0aJXBZTDxQmsBv7JX-8_7P4L9sHc" />
+  	<meta name="google-site-verification" content="YJcUvNu-bE-Vuy6NX1S6MsEkRzi9Ilbdlu7hRrkiAc8" />
+</head>
+
+
+<body id="{{ page_title | handle }}" {% if template contains 'index' %}class="index"{% else %}class="not-index"{% endif %}>
+    {% comment %} Main Nav {% endcomment %}
+    {% include 'nav-menu' %}
+
+    <!-- Off-canvas Element 1 -->
+    <nav id="slideInMenu" class="offside">
+        <div class="slide-in-menu-header">
+            <h1>Cart</h1>
+            <a class="slide-in-menu-close" href="javascript:void(0)">Close</a>
+        </div>
+        <div id="CartContainer"></div>
+    </nav>
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PV8LSN5" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div id="container">
+        {% unless collection.handle == nil %}
+            {% unless product.handle != nil %}
+                <!-- Text Banner -->
+                {% include 'collection-banners' %}
+                <!-- Callouts -->
+                <div class="call-out-section hidden-xs">
+                    <div class="call-out-container container">
+                        {% include 'callouts' %}
+                    </div>
+                </div>
+            {% endunless %}
+        {% endunless %}
+
+        {% unless collection.handle and product.handle %}
+            <div class="postcode-validation header hidden-xs">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-10 col-sm-6">
+                            <div class="validation-icon hide-block">
+                                {{ 'tick-icon.png' | asset_url | img_tag: '', 'icon' }}
+                            </div>
+                            {% include 'postcode-check-message-section' %}
+                        </div>
+                        <div class="col-xs-2 col-sm-1 pull-right" style="display:none">
+                            <div class="banner-close">
+                                <a href="#">X</a>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-5 col-sm-offset-1">
+                            {% include 'postcode-check-input-section', id:"header" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endunless %}
+        {{ content_for_layout }}
+        {% include 'footer' %}
+    </div>
+
+    {{ 'bootstrap.min.js' | asset_url | script_tag }}
+    {{ 'js-module-navbar-scroll.js' | asset_url | script_tag }}
+    {{ 'script.js' | asset_url | script_tag }}
+
+    {% if template contains 'customers' %}
+    	{{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+	{% endif %}
+
+    {{ 'handlebars.min.js' | asset_url | script_tag }}
+    {% include 'ajax-cart-template' %}
+    {{ 'ajax-cart.js' | asset_url | script_tag }}
+
+    <script>
+        jQuery(function($) {
+            ajaxCart.init({
+                formSelector: '#AddToCartForm',
+                cartContainer: '#CartContainer',
+                addToCartSelector: '#AddToCart',
+                cartCountSelector: '#CartCount',
+                cartCostSelector: '#CartCost',
+                moneyFormat: {{ shop.money_format | json }}
+            });
+
+            ajaxCart.load();
+        });
+
+    </script>
+
+    <!-- # checkStorageSupport module has storageAvailable function to check whether localStorage/sessionStorage is supported # -->
+    {{ 'js-module-check-storage-support.js' | asset_url | script_tag }}
+
+    <!-- # convertStringToArray module has postcodeList function to convert a postcode list string to an array # -->
+    {{ 'js-module-postcodes-string-array.js' | asset_url | script_tag }}
+
+    <!-- # convertStringToArray module has postcodeList function to convert a postcode list string to an array # -->
+    {{ 'js-module-postcode-city.js' | asset_url | script_tag }}
+
+    <script type="text/javascript">
+ 
+        (function($) {
+            $(function() {
+                var postcodesString = '{{ settings.area_postcodes_list }}',//Get all the postcodes from shopify admin area
+                    postCodesArray = convertStringToArray.postcodeList(postcodesString), //Get the array of postcodes from a string
+                    errorPrimaryMessage = "{{ settings.postcode_validation_error_primary_message }}",
+                    errorSecondaryMessage = "{{ settings.postcode_validation_error_secondary_message }}",
+                    successPrimaryMessage = "{{ settings.postcode_validation_success_primary_message }}",
+                    successSecondaryMessage = "{{ settings.postcode_validation_success_secondary_message }}",
+                    intialPrimaryMessage = "{{ settings.postcode_initial_primary_message }}",
+                    intialSecondaryMessage = "{{ settings.postcode_initial_secondary_message }}",
+                    cityPostcode = '';
+
+                $('.postcode-message').addClass('initial');
+                $('.postcode-message > .postcode-primary-message > .message').html(intialPrimaryMessage);
+                $('.postcode-message > .postcode-secondary-message').html(intialSecondaryMessage);
+
+                //Check whether localStorage is supported
+                if(checkStorageSupport.storageAvailable('localStorage'))
+                {
+                    //Check whether the postcode header banner is closed
+                    if(! localStorage.hasOwnProperty('hasPostcodeHeaderBanner'))
+                    {
+                        localStorage.setItem('hasPostcodeHeaderBanner', 'true');
+                    }
+
+                    if(localStorage.getItem('hasPostcodeHeaderBanner') == 'true')
+                    {
+                        //Check whether session is set and is true
+                        if(localStorage.hasOwnProperty('hasValidatedPostCode'))
+                        {
+                            sessionPrimaryMessage = errorPrimaryMessage;
+                            sessionSecondaryMessage = errorSecondaryMessage;
+                            if(localStorage.hasOwnProperty('cityAndPostcode'))
+                            {
+                                cityPostcode = localStorage.getItem('cityAndPostcode');
+                            }
+
+                            if(localStorage.getItem('hasValidatedPostCode') == 'true')
+                            {
+                                sessionPrimaryMessage = successPrimaryMessage + ' ' + cityPostcode;
+                                sessionSecondaryMessage = successSecondaryMessage;
+                                $('.validation-icon').removeClass('hide-block').addClass('show-block');
+                            } else {
+                                $('.postcode-validation .postcode-check').toggleClass('css-show-section css-hide-section');//Change postcode section class names
+                                $('.postcode-validation .email-check').toggleClass('css-hide-section css-show-section');//Change email section class names
+                                $('.validation-icon').removeClass('show-block').addClass('hide-block');
+                                $('.try-another').toggleClass('hide-link show-link');
+                            }
+
+                            //Clear any data
+                            $('.postcode-message > .postcode-primary-message > .message, .postcode-message > .postcode-secondary-message').html();
+
+                            //Remove "initial" class
+                            $('.postcode-message').removeClass('initial');
+
+                            //Add status message
+                            $('.postcode-message > .postcode-primary-message > .message').html(sessionPrimaryMessage);
+                            $('.postcode-message > .postcode-secondary-message').html(sessionSecondaryMessage);
+                        }
+
+                    } else {
+                        $('.header.postcode-validation').hide();
+                    }
+                }
+              
+              	var postcodeInputs = $('input[id=mce-POSTCODE]');
+                postcodeInputs.keyup(function(){
+                    var input = $(this);
+                    window.postCodeValue = input.val();
+                    postcodeInputs.val(window.postCodeValue);
+                });
+
+                var emailInputs = $('input[id=mce-EMAIL]');
+                emailInputs.keyup(function(){
+                    var input = $(this);
+                    window.emailValue = input.val();
+                    emailInputs.val(window.emailValue);
+                });
+              
+              	var subscribeForms = $('form[id=mc-embedded-subscribe-form]');
+                var subscribeFormOne = $(subscribeForms.get(0));
+                var subscribeFormTwo = $(subscribeForms.get(1));
+              
+              	subscribeFormTwo.attr('id', '');	
+              
+             
+                subscribeFormTwo.submit(function(e){
+                    e.preventDefault();
+                    subscribeFormOne.submit();
+                });
+
+                /* Postcode submit event */
+                $('button.check-location').on('click', function() {
+
+                    if( isNaN( parseInt( window.postCodeValue ) ) )
+                    {
+                        postcodeInputs.addClass('error').attr("placeholder", "Postcode must be in numbers");
+                        return false;
+                    }
+
+                    postcodeInputs.removeClass('error').attr("placeholder", "Enter your postcode");
+
+                    var $this = $(this),
+                        postcode = window.postCodeValue.toString(),
+                        city = '',
+                        cityPostcode = ' this postcode ' + postcode;
+
+                    statusPrimaryMessage = errorPrimaryMessage;
+                    statusSecondaryMessage = errorSecondaryMessage;
+
+                    /* Get city name from postcode */
+                    city = postcodeToCity.getCity(postcode);
+                    if(city != '')
+                    {
+                        cityPostcode = city + ', ' + postcode;
+                    }
+
+                    localStorage.setItem('cityAndPostcode', cityPostcode);
+
+                    //Check whether a postcode exists in the postcode array from above.
+                    if($.inArray(postcode, postCodesArray) != -1)
+                    {
+                        statusPrimaryMessage = successPrimaryMessage + ' ' + cityPostcode;
+                        statusSecondaryMessage = successSecondaryMessage;
+                        localStorage.setItem('hasValidatedPostCode', 'true');
+
+                        $('.validation-icon').removeClass('hide-block').addClass('show-block');
+                    } else {
+                        localStorage.setItem('hasValidatedPostCode', 'false');
+                        $('.postcode-validation .postcode-check').toggleClass('css-show-section css-hide-section');//Change postcode section class names
+                        $('.postcode-validation .email-check').toggleClass('css-hide-section css-show-section');//Change email section class names
+
+                        $('.validation-icon').removeClass('show-block').addClass('hide-block');
+                        $('.try-another').toggleClass('hide-link show-link');
+                    }
+
+                    //Clear any data
+                    $('.postcode-message > .postcode-primary-message > .message, .postcode-message > .postcode-secondary-message').html();
+
+                    //Remove "initial" class
+                    $('.postcode-message').removeClass('initial');
+
+                    //Add status message
+                    $('.postcode-message > .postcode-primary-message > .message').html(statusPrimaryMessage);
+                    $('.postcode-message > .postcode-secondary-message').html(statusSecondaryMessage);
+
+                });
+              
+                /* Close button for Postcode validation header */
+                $('.header .banner-close a').on('click', function(e) {
+                    e.preventDefault();
+                    $('.header.postcode-validation').hide();
+                    localStorage.setItem('hasPostcodeHeaderBanner', 'false');
+                });
+
+                //Clear all the localStorage data
+                $('.try-another').on('click', function(e) {
+                    e.preventDefault();
+                   //Clear all data from localStorage
+                    localStorage.clear();
+
+                    //Load Initial Message
+                    $('.postcode-message').addClass('initial');
+                    $('.postcode-message > .postcode-primary-message > .message').html(intialPrimaryMessage);
+                    $('.postcode-message > .postcode-secondary-message').html(intialSecondaryMessage);
+
+                    $('.postcode-validation .postcode-check').toggleClass('css-show-section css-hide-section');//Change postcode section class names
+                    $('.postcode-validation .email-check').toggleClass('css-hide-section css-show-section');//Change email section class names
+
+                    $('.try-another').toggleClass('hide-link show-link');
+
+                    //Clear input data
+                    $('.area-postcode').val('');
+                });
+
+                /*Cart*/
+                $('body').on('click', '[name="checkout"], [name="goto_pp"], [name="goto_gc"]', function() {
+                    if ($('#agree').is(':checked') && $('#leave-unattended').is(':checked')) {
+                        $(this).submit();
+                    } else {
+                        alert("You must agree with the Terms and Conditions and Authority to Leave Unattended to check out.");
+                        return false;
+                    }
+                });
+            });
+        })(jQuery);
+    </script>
+
+</body>
+</html>

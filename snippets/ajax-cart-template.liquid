@@ -1,0 +1,208 @@
+<!-- /snippets/ajax-cart-template.liquid -->
+{% comment %}
+  This snippet provides the default handlebars.js templates for
+  the ajax cart plugin. Use the raw liquid tags to keep the
+  handlebar.js template tags as available hooks.
+{% endcomment %}
+  <script id="CartTemplate" type="text/template">
+  {% raw %}
+    <form action="/cart" method="post" novalidate class="cart ajaxcart">
+      <div class="ajaxcart__inner">
+        {{#items}}
+            <div class="ajaxcart__product" id="prod-{{variantId}}">
+              <div class="ajaxcart__row" data-line="{{line}}">
+                <div class="grid">
+                  <div class="grid__item one-quarter">
+                    <a href="{{url}}" class="ajaxcart__product-image"><img src="{{img}}" alt=""></a>
+                  </div>
+                  <div class="grid__item three-quarters">
+                    <p class="main-data">
+                      <a href="{{url}}" class="ajaxcart__product-name">{{name}}</a>
+                      {{#if discountsApplied}}
+                        <small class="ajaxcart-item__price-strikethrough"><s>{{{originalLinePrice}}}</s></small>
+                        <br><span class="ajaxcart-item__price">{{{linePrice}}}</span>
+                      {{else}}
+                        <span class="ajaxcart-item__price">{{{linePrice}}}</span>
+                      {{/if}}
+                      {{#if variation}}
+                        <span class="ajaxcart__product-meta">{{variation}}</span>
+                      {{/if}}
+                      {% endraw %}{% if settings.cart_vendor_enable %}{% raw %}
+                        <span class="ajaxcart__product-meta ajaxcart__product-meta-vendor">{{ vendor }}</span>
+                      {% endraw %}{% endif %}{% raw %}
+                    </p>
+
+                    <div class="ajaxcart__qty">
+                      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus icon-fallback-text" data-id="{{key}}" data-qty="{{itemMinus}}" data-line="{{line}}">
+                        <span class="icon icon-minus" aria-hidden="true"></span>
+                        <span class="fallback-text" aria-hidden="true">&minus;</span>
+                        <span class="visually-hidden">{% endraw %}{{ 'cart.general.reduce_quantity' | t }}{% raw %}</span>
+                      </button>
+                      <input type="text" name="updates[]" class="ajaxcart__qty-num" value="{{itemQty}}" min="0" data-id="{{key}}" data-line="{{line}}" aria-label="quantity" pattern="[0-9]*">
+                      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--plus icon-fallback-text" data-id="{{key}}" data-line="{{line}}" data-qty="{{itemAdd}}">
+                        <span class="icon icon-plus" aria-hidden="true"></span>
+                        <span class="fallback-text" aria-hidden="true">+</span>
+                        <span class="visually-hidden">{% endraw %}{{ 'cart.general.increase_quantity' | t }}{% raw %}</span>
+                      </button>
+                    </div>
+
+                    {{#if discountsApplied}}
+                      <div class="grid--full display-table">
+                        <div class="grid__item text-right">
+                          {{#each discounts}}
+                            <small class="ajaxcart-item__discount">{{ this.title }}</small><br>
+                          {{/each}}
+                        </div>
+                      </div>
+                    {{/if}}
+                  </div>
+                </div>
+              </div>
+            </div>
+        {{/items}}
+
+        {{#mealPlan}}
+        <input type="hidden" name="attributes[mealplan_title]" value="{{mealPlanTitle}}" />
+        <input type="hidden" name="attributes[mealplan_duration]" value="{{mealPlanDurationNumber}}" />
+        <input type="hidden" name="attributes[mealplan_image]" value="{{mealPlanImage}}" />
+        <input type="hidden" name="attributes[mealplan_items]" value="{{mealPlanItems}}" />
+          <div class="ajaxcart__product meal-plan">
+            <div class="ajaxcart__row" data-line="{{line}}">
+              <div class="grid">
+                <div class="grid__item one-quarter meal-plan-image" style="background-image: url({{mealPlanImage}})"></div>
+                <div class="grid__item three-quarters meal-plan-content">
+                  <div class="item-data">
+                    <p class="meal-plan-title">{{mealPlanTitle}}</p>
+                    <p class="meal-plan-desc">{{mealPlanDescription}}</p>
+                    <p class="meal-plan-extras">
+                      <span class="meal-plan-price first">{{totalPrice}} per week</span>|<span class="meal-plan-item-count">{{totalItems}}</span>|<span class="meal-plan-duration last">{{mealPlanDuration}}</span>
+                    </p>
+                  </div>
+                  <div class="item-actions">
+                    <p><a href="{{ shop.url }}/pages/meal-plan">View Plan</a></p>
+                    <p class="remove-mealplan-item"><a href="#">Remove</a></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {{#products}}
+              {{#each this}}
+                {{#if this}}
+                  <span class="hide ajaxcart__product-data" data-key="{{@key}}" data-qty="{{this}}"></span>
+                {{/if}}
+              {{/each}}
+            {{/products}}
+          </div>
+        {{/mealPlan}}
+      </div>
+      {% endraw %}
+      {% if settings.enable_cart_recycle_box %}
+        {% raw %}
+          <div class="ajaxcart__product recycle-box">
+            <div class="ajaxcart__row" data-line="{{line}}">
+              <div class="grid">
+                <div class="grid__item">
+                  <div class="box-content">
+                    <input type="hidden" name="attributes[recycle_box]" value="No">
+                    <input type="checkbox" id="recycle-box" name="attributes[recycle_box]"
+                     value="Yes"{{#if recycleBoxOption }} checked{{/if}}>
+                    <label for="recycle-box">
+                      <p class="title">{% endraw %}{{settings.recycle_box_title}}{% raw %}</p>
+                      <p>{% endraw %}{{settings.recycle_box_text}}{% raw %}</p>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endraw %}
+      {% endif %}
+      {% raw %}
+      <div class="ajaxcart__footer">
+        <div class="fixed-cart-footer">
+          <div class="footer-totals">
+              <p>{% endraw %}Total:{% raw %}</p>
+              <p class="footer-total">{{{totalPrice}}}</p>
+          </div>
+          <div class="checkout-btn-container">
+              <button type="submit" class="btn--secondary btn--full cart__checkout" name="checkout">
+                {% endraw %}{{ 'cart.general.checkout' | t }}{% raw %}
+              </button>
+          </div>
+        </div>
+        {{#if totalCartDiscount}}
+          <p class="ajaxcart__savings text-center"><em>{{{totalCartDiscount}}}</em></p>
+        {{/if}}
+        
+        <p class="clear-cart-btn"><a href="javascript:void(0)">Clear Cart</a></p>
+        <div class="custom-cart-callouts">
+          {% endraw %}{% include 'cart-sidebar-callouts' %}{% raw %}
+        </div>
+        
+        {% endraw %}{% if additional_checkout_buttons %}
+          <div class="additional_checkout_buttons">{{ content_for_additional_checkout_buttons }}</div>
+        {% endif %}{% raw %}
+     
+    </div>
+    </form>
+  {% endraw %}
+  </script>
+  {{ 'cart-custom-attr-script.js' | asset_url | script_tag }}
+  <script id="AjaxQty" type="text/template">
+  {% raw %}
+    <div class="ajaxcart__qty">
+      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus icon-fallback-text" data-id="{{key}}" data-qty="{{itemMinus}}">
+        <span class="icon icon-minus" aria-hidden="true"></span>
+        <span class="fallback-text" aria-hidden="true">&minus;</span>
+        <span class="visually-hidden">{% endraw %}{{ 'cart.general.reduce_quantity' | t }}{% raw %}</span>
+      </button>
+      <input type="text" class="ajaxcart__qty-num" value="{{itemQty}}" min="0" data-id="{{key}}" aria-label="quantity" pattern="[0-9]*">
+      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--plus icon-fallback-text" data-id="{{key}}" data-qty="{{itemAdd}}">
+        <span class="icon icon-plus" aria-hidden="true"></span>
+        <span class="fallback-text" aria-hidden="true">+</span>
+        <span class="visually-hidden">{% endraw %}{{ 'cart.general.increase_quantity' | t }}{% raw %}</span>
+      </button>
+    </div>
+  {% endraw %}
+  </script>
+  <script id="JsQty" type="text/template">
+  {% raw %}
+    <div class="js-qty">
+      <button type="button" class="js-qty__adjust js-qty__adjust--minus icon-fallback-text" data-id="{{key}}" data-qty="{{itemMinus}}">
+        <span class="icon icon-minus" aria-hidden="true"></span>
+        <span class="fallback-text" aria-hidden="true">&minus;</span>
+        <span class="visually-hidden">{% endraw %}{{ 'cart.general.reduce_quantity' | t }}{% raw %}</span>
+      </button>
+      <input type="text" class="js-qty__num" value="{{itemQty}}" min="1" data-id="{{key}}" aria-label="quantity" pattern="[0-9]*" name="{{inputName}}" id="{{inputId}}">
+      <button type="button" class="js-qty__adjust js-qty__adjust--plus icon-fallback-text" data-id="{{key}}" data-qty="{{itemAdd}}">
+        <span class="icon icon-plus" aria-hidden="true"></span>
+        <span class="fallback-text" aria-hidden="true">+</span>
+        <span class="visually-hidden">{% endraw %}{{ 'cart.general.increase_quantity' | t }}{% raw %}</span>
+      </button>
+    </div>
+  {% endraw %}
+  </script>
+
+<style>
+ #AjaxifyCart .additional-checkout-buttons, #ajaxifyCart .additional-checkout-buttons {
+    display:none;
+}
+</style>
+{% if template != 'cart'  %}
+    <script src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+	<script>
+	rjQuery = jQuery.noConflict( true );
+    var subscription_active='{{shop.metafields.subscriptions.subscription_active}}'
+    function get_cookie(k){return(document.cookie.match('(^|; )'+k+'=([^;]*)')||0)[2]}
+    if (get_cookie('recharge')=='true' || subscription_active=='true') { 
+        rjQuery('body').on('click','form[action="/checkout"] input[type="submit"], #ajaxifyCart [name="checkout"], #AjaxifyCart [name="checkout"], #shoppingBagInner [name="checkout"]', function(e){
+            e.preventDefault(); 
+            window.location.href = '/cart';
+        })
+        rjQuery('.additional-checkout-buttons').hide()
+        rjQuery(document).ready(function(){
+            rjQuery('.additional-checkout-buttons').hide()
+        })
+    }
+    </script>
+{% endif %}

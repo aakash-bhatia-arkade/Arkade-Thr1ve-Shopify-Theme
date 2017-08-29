@@ -1,0 +1,29 @@
+<!-- Terms and Conditions -->
+{% if settings.enable_cart_terms_conditions %}
+	<div class="terms">
+		<input type="hidden" name="attributes[terms_and_conditions]" value="No">
+		<input required class="required" type="checkbox" id="terms-conditions" name="attributes[terms_and_conditions]"
+			 value="Yes"{% if cart.attributes["terms_and_conditions"] == 'Yes' %} checked{% endif %}>
+		<label for="terms-conditions">I agree to all <a href="/pages/terms-and-conditions" target="_blank">Terms and Conditions</a>.</label>
+	</div>
+{% endif %}
+
+<!-- Leave Unattended -->
+{% if settings.enable_cart_leave_unattended_check %}
+	<div class="leave-unattended">
+		<p class="cart-attribute__field">
+			<input type="hidden" name="attributes[authority_to_leave]" value="No">
+			<input required class="required" type="checkbox" id="leave-unattended" name="attributes[authority_to_leave]"
+			 value="Yes"{% if cart.attributes["authority_to_leave"] == 'Yes' %} checked{% endif %}>
+			<label for="leave-unattended">Authority to Leave (Unattended Delivery).</label>
+		</p>
+	</div>
+{% endif %}
+
+<!-- Cart Notes -->
+{% if settings.enable_cart_notes %}
+	<div class="cart-note-checkout" id="cart-note-checkout">
+		<label for="CartSpecialInstructions">{{ 'cart.general.note' | t }}</label>
+		<textarea name="note" class="input-full form-control" id="CartSpecialInstructions" rows="3">{{ cart.note }}</textarea>
+	</div>
+{% endif %}

@@ -1,0 +1,245 @@
+<!-- /templates/product.liquid -->
+<div itemscope itemtype="http://schema.org/Product">
+
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+  <meta itemprop="image" content="{{ product.featured_image.src | img_url: 'grande' }}">
+
+  <div class="container product-page-content" id="page-content">
+    <p class="back-to-meal-plan-btn">
+      <a href="/collections/fresh-ready-meals">
+        {{ 'back-arrow.png' | asset_url | img_tag: collection.title, 'css-back-arrow-pico pico' }}Go back to Fresh Ready Meals
+      </a>
+
+    <div class="row" id="product">
+      <div class="col-sm-6">
+        <div class="row">
+
+          {% if settings.product_photos == 'left' %}
+            {% if product.images.size > 1 %}
+            <div class="col-sm-2 col-xs-3" id="product-thumbs">
+              <ul class="list-unstyled">
+                {% for image in product.images %}
+                <li><img src="{{ image.src | img_url: '1024x1024' }}" alt="{{ image.alt | escape }}"  class="img-responsive"></li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+          {% endif %}
+
+          <div class="{% if product.images.size > 1 %}col-sm-10 col-xs-9{% else %}col-xs-12{% endif %}" id="featured-image">
+            {% assign featured_image = product.selected_or_first_available_variant.featured_image | default: product.featured_image %}
+            <img src="{{ featured_image | img_url: '1024x1024' }}" alt="{{ featured_image.alt | escape }}" class="img-responsive" id="large-image">
+          </div>
+
+          {% if settings.product_photos == 'right' %}
+            {% if product.images.size > 1 %}
+            <div class="col-sm-2 col-xs-3" id="product-thumbs">
+              <ul class="list-unstyled">
+                {% for image in product.images %}
+                <li><img src="{{ image.src | img_url: '1024x1024' }}" alt="{{ image.alt | escape }}"  class="img-responsive"></li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="product-details">
+          <h2 itemprop="name" id="product-title">{{ product.title }}</h2>
+          <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+
+            {% assign variant = product.selected_or_first_available_variant %}
+            <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+            <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
+
+            <form action="/cart/add" data-productid="{{product.id}}"  method="post" enctype="multipart/form-data" id="AddToCartForm"> 
+ {% if product.available %}{% include 'subscription-product' %}{% endif %} 
+
+              <div id="product-price-holder">
+                <p id="product-price" itemprop="price">
+                {{ product.price | money }}
+                </p>
+
+                {% if product.compare_at_price > product.price %}
+                <p id="compare-price">
+                  {{ 'products.product.compare_at' | t }} {{ product.compare_at_price_max | money }}
+                </p>
+                {% endif %}
+                
+                <span style="cursor:pointer" id="zip-prod-widg" data-zm-asset="productwidget" data-zm-widget="popup" data-zm-popup-asset="termsdialog"></span>
+
+              </div>
+             
+              <div class="row">
+                <div class="col-sm-12">
+                  <!-- Tag Icons -->
+                  {% if product.tags.size > 0 %}
+                  <div class="allergy-info">
+                    {% include 'product-tags', tagText: true %}
+                  </div>
+                  {% endif %}
+
+                  <div class="form-group hide">
+                    <select name="id" data-productid="{{product.id}}" id="productSelect" class="form-control">
+                      {% for variant in product.variants %}
+                        {% if variant.available %}
+                          <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money_with_currency }}</option>
+                        {% else %}
+                          <option disabled="disabled">
+                            {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+                          </option>
+                        {% endif %}
+                      {% endfor %}
+                    </select>
+                  </div>
+                  
+                  {% if settings.enable_cart_checkout %}
+                    {% if settings.product_quantity_box %}
+                    <div class="form-group css-qty-box">
+                      <label for="Quantity" class="quantity-selector">{{ 'products.product.quantity' | t }}</label>
+                      <input type="number" id="Quantity" name="quantity" value="1" min="1" class="quantity-selector">
+                    </div>
+                    {% endif %}
+
+                    <button type="submit" name="add" id="AddToCart" class="btn btn-primary">
+                      <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+                    </button>
+                  {% endif %}
+
+                </div>
+              </div>
+            </form>
+
+            <div class="product-description">
+            {{ product.description }}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nutritional & Ingredients -->
+    {% include 'product-nutrition-ingredients' %}
+
+    {% if settings.enable_related_products %}
+    {% include 'related-products' %}
+    {% endif %}
+
+  </div>
+</div>
+
+{{ 'option_selection.js' | shopify_asset_url | script_tag }}
+<script>
+
+  var selectCallback = function(variant, selector) {
+
+    var addToCart = $('#AddToCart'),
+        productPrice = $('#product-price'),
+        comparePrice = $('#compare-price');
+
+    if (variant) {
+      if (variant.available) {
+        // We have a valid product variant, so enable the submit button
+        addToCart.removeClass('disabled').prop('disabled', false).val('{{ settings.cart_button_text }}');
+
+      } else {
+        // Variant is sold out, disable the submit button
+        addToCart.val('Sold Out').addClass('disabled').prop('disabled', true);
+      }
+
+      // Regardless of stock, update the product price
+      productPrice.html(Shopify.formatMoney(variant.price, "{{ shop.money_format }}"));
+
+      // Also update and show the product's compare price if necessary
+      if ( variant.compare_at_price > variant.price ) {
+        comparePrice
+          .html('Compare at: ' + Shopify.formatMoney(variant.compare_at_price, "{{ shop.money_format }}"))
+          .show();
+      } else {
+        comparePrice.hide();
+      }
+
+    } else {
+      // The variant doesn't exist, disable submit button.
+      // This may be an error or notice that a specific variant is not available.
+      // To only show available variants, implement linked product options:
+      //   - http://docs.shopify.com/manual/configuration/store-customization/advanced-navigation/linked-product-options
+      addToCart.val('Unavailable').addClass('disabled').prop('disabled', true);
+    }
+    if (variant && variant.featured_image) {
+          var originalImage = $("#featured-image img");
+          var newImage = variant.featured_image;
+          var element = originalImage[0];
+          Shopify.Image.switchImage(newImage, element, function (newImageSizedSrc, newImage, element) {
+              $(element).parents('a').attr('href', newImageSizedSrc);
+              $(element).attr('src', newImageSizedSrc);
+          });
+      }
+
+  };
+
+  jQuery(function($) {
+
+    new Shopify.OptionSelectors('productSelect', {
+      product: {{ product | json }},
+      onVariantSelected: selectCallback,
+      enableHistoryState: true
+    });
+
+    // Add label if only one product option and it isn't 'Title'. Could be 'Size'.
+    {% if product.options.size == 1 and product.options.first != 'Title' %}
+      $('.selector-wrapper:eq(0)').prepend('<label>{{ product.options.first }}</label>');
+    {% endif %}
+
+    // Hide selectors if we only have 1 variant and its title contains 'Default'.
+    {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
+      $('.selector-wrapper').hide();
+    {% endif %}
+
+    // Auto-select first available variant on page load. Otherwise the product looks sold out.
+    {% assign found_one_in_stock = false %}
+    {% for variant in product.variants %}
+      {% if variant.available and found_one_in_stock == false %}
+        {% assign found_one_in_stock = true %}
+        {% for option in product.options %}
+        $('.single-option-selector:eq({{ forloop.index0 }})').val({{ variant.options[forloop.index0] | json }}).trigger('change');
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+
+  });
+</script>
+
+<!-- ematic.js begin -->
+<script type="text/javascript">
+    (function () {
+        var imageUrl = "https:{{ product.featured_image |  img_url: 'large' }}";
+        if (!imageUrl) {
+            imageUrl = "https://shopify.ematicsolutions.com/no-image.jpg";
+        };
+        function decodeHtml(html) {
+            var txt = document.createElement("textarea");
+            txt.innerHTML = html;
+            return txt.value;
+        }
+        ematics("log", "product", "browse", [{
+            id: "{{ product.id }}",
+            quantity: 1,
+            name: decodeHtml("{{ product.title | strip_html | escape }}"),
+            brandName: decodeHtml("{{ product.vendor | strip_html | escape }}"),
+            {% if product.selected_or_first_available_variant %}
+            price: decodeHtml("{{ product.selected_or_first_available_variant.price | money | strip_html }}"),
+            {% else %}
+            price: decodeHtml("{{ product.price | money | strip_html }}"),
+            {% endif %}
+            link: "{{ shop.url }}{{ product.url }}",
+            imageUrl: imageUrl,
+            desc: decodeHtml("{{ product.description | strip_html | strip_newlines | escape }}")
+    }]);
+    })();
+
+</script>
+<!-- ematic.js end -->

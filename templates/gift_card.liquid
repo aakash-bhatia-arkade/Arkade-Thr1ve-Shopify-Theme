@@ -1,0 +1,141 @@
+<!-- /templates/gift_card.liquid -->
+{% layout none %}
+{% assign formatted_initial_value = gift_card.initial_value | money_without_trailing_zeros: gift_card.currency %}
+{% assign formatted_initial_value_stripped = formatted_initial_value | strip_html %}
+<!doctype html>
+<!--[if lt IE 7]><html class="template-giftcard no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]><html class="template-giftcard no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]><html class="template-giftcard no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="ie9 template-giftcard no-js"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="template-giftcard no-js"> <!--<![endif]-->
+<head>
+
+  <!-- Basic page needs ================================================== -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  {% if settings.favicon_enable %}
+  <link rel="shortcut icon" href="{{ 'favicon.png' | asset_url }}" type="image/png" />
+  {% endif %}
+
+  <!-- Title and description ================================================== -->
+  <title>{{ 'gift_cards.issued.title' | t: value: formatted_initial_value_stripped, shop: shop.name }}</title>
+  <meta name="description" content="{{ 'gift_cards.issued.subtext' | t }}">
+
+  <!-- Helpers ================================================== -->
+  <link rel="canonical" href="{{ canonical_url }}">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="format-detection" content="telephone=no">
+
+  {{ 'timber.scss.css' | asset_url | stylesheet_tag }}
+  {{ 'gift-card.scss.css' | asset_url | stylesheet_tag }}
+  {{ 'modernizr.gift-card.js' | shopify_asset_url | script_tag }}
+
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+
+    <header class="giftcard-header" role="banner">
+      <div class="h1 header-logo" itemscope itemtype="http://schema.org/Organization">
+        {% if settings.logo_use_image %}
+          <a href="/" itemprop="url">
+            <center><BR><BR><img src="https://cdn.shopify.com/s/files/1/1529/8583/files/THR1VE_giftcard3.jpg?7016578445719478483" width="500px"></center>
+          </a>
+        {% else %}
+          <a href="/" itemprop="url">{{ shop.name }}</a>
+        {% endif %}
+      </div>
+      {% comment %}<div class="shop-url">{{ shop.url }}hello</div>{% endcomment %}
+    </header>
+
+    <main class="giftcard" role="main">
+      <div class="giftcard__border{% if gift_card.expired or gift_card.enabled != true %} disabled{% endif %}">
+        <div class="giftcard__content">
+
+          <div class="giftcard__header">
+           <center> <h2></h2></center>
+            {% unless gift_card.enabled %}
+              <span class="giftcard__tag">{{ 'gift_cards.issued.disabled' | t }}</span>
+            {% endunless %}
+            {% assign gift_card_expiry_date = gift_card.expires_on | date: "%d/%m/%y" %}
+            {% if gift_card.expired and gift_card.enabled %}
+               <span class="giftcard__tag">{{ 'gift_cards.issued.expired' | t: expiry: gift_card_expiry_date }}</span>
+            {% endif %}
+            {% if gift_card.expired != true and gift_card.expires_on and gift_card.enabled %}
+              <span class="giftcard__tag giftcard__tag--active">{{ 'gift_cards.issued.active' | t: expiry: gift_card_expiry_date }}</span>
+            {% endif %}
+          </div>
+
+          <div class="giftcard__wrap">
+          {% comment %}  <img src="{{ 'gift-card/card.jpg' | shopify_asset_url }}" alt="Gift card illustration">{% endcomment %}
+
+            {% assign initial_value_size = formatted_initial_value | size %}
+           <center> <div class="h1 giftcard__amount{% if initial_value_size > 6 %} giftcard__amount--medium{% endif %}">
+              {% if gift_card.balance != gift_card.initial_value %}
+                <span class="tooltip">
+                  <span class="tooltip__label">{{ gift_card.balance | money }} <small>left</small></span>
+                </span>
+              {% endif %}
+              <strong><h1>{{ formatted_initial_value }}</h1></strong>
+            </div></center>
+
+            {% assign code_size = gift_card.code | format_code | size %}
+           <center> <div class="giftcard__code{% if code_size <= 25 %} giftcard__code--large{% elsif code_size > 25 and code_size <= 30 %} giftcard__code--medium{% else %} giftcard__code--small{% endif %}" onclick="selectText('GiftCardDigits');">
+              <div class="giftcard__code__inner">
+                <strong class="giftcard__code__text" id="GiftCardDigits"><h1>{{ gift_card.code | format_code }}</h1></strong>
+              </div></center>
+            </div>
+          </div>
+
+          <center><p class="giftcard__instructions">
+            Use this code at the checkout to redeem your gift card<BR><BR>
+          </p></center>
+
+          <center><div class="giftcard__actions">
+            <a href="{{ shop.url }}" class="btn" target="_blank"><img src="https://cdn.shopify.com/s/files/1/1529/8583/files/THR1VE_giftcard2button.jpg?14711653893929107232" width="150px"></a>
+            <BR><a href="#" class="action-link" onclick="window.print();">
+              <i class="action-link__print"></i><BR><BR><I>or, print this and save it for another day.</I>
+            </a>
+            </div></center>
+
+        </div>
+      </div>
+    </main>
+
+    <footer class="giftcard__footer" role="contentinfo">
+      <center> <BR><BR><img src="{{ 'gift-card/icon-bug.png' | shopify_asset_url }}" class="giftcard__icon" alt="{{ 'gift_cards.issued.subtext' | t }}" width="50px"></center>
+    </footer>
+
+  </div>
+
+  <script type="text/javascript">
+    /*============================================================================
+      Auto-select gift card code on click, based on ID passed to the function
+        - Use a different method depending on IE or others
+    ==============================================================================*/
+    function selectText(element) {
+      var doc = document,
+          text = doc.getElementById(element);
+
+      if (doc.body.createTextRange) { // ms
+        var range = doc.body.createTextRange();
+        range.moveToElementText(text);
+        range.select();
+      } else if (window.getSelection) { // moz, opera, webkit
+        var selection = window.getSelection(),
+            range = doc.createRange();
+        range.selectNodeContents(text);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    }
+  </script>
+
+</body>
+</html>

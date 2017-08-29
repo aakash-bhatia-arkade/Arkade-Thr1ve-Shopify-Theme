@@ -1,0 +1,67 @@
+<!-- snippets/page-sidebar.liquid -->
+
+<div class="col-sm-3" id="sidebar">
+	{% assign collection = collections.[settings.page_sidebar_collection] %}
+	{% if collection.handle != "" %}
+	<div>
+		<h5>{{ collection.title }}</h5>
+		<div class="row">
+		{% for product in collections.[collection.handle].products | limit:8 %}
+			{% include 'product-sidebar' %}
+		{% endfor %}
+		</div>
+	</div>
+	{% endif %}
+	
+	{% assign text_widget = pages.[settings.page_sidebar_text_widget] %}
+	{% if text_widget.handle != "" %}
+	<div>
+		<h5>{{ text_widget.title }}</h5>
+		{{ text_widget.content }}
+	</div>
+	{% endif %}
+	
+	{% if settings.page_sidebar_linklist_one != blank %}
+	<div>
+		<h5>{{ linklists[settings.page_sidebar_linklist_one].title }}</h5>
+		<ul class="list-unstyled">
+			{% for link in linklists[settings.page_sidebar_linklist_one].links %}
+			<li><a href="{{ link.url }}">{{ link.title }}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
+
+	{% if settings.page_sidebar_linklist_two != blank %}
+	<div>
+		<h5>{{ linklists[settings.page_sidebar_linklist_two].title }}</h5>
+		<ul class="list-unstyled">
+			{% for link in linklists[settings.page_sidebar_linklist_two].links %}
+			<li><a href="{{ link.url }}">{{ link.title }}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
+	
+	{% if settings.page_sidebar_linklist_three != blank %}
+	<div>
+		<h5>{{ linklists[settings.page_sidebar_linklist_three].title }}</h5>
+		<ul class="list-unstyled">
+			{% for link in linklists[settings.page_sidebar_linklist_three].links %}
+			<li><a href="{{ link.url }}">{{ link.title }}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
+	
+	{% if settings.page_sidebar_posts != blank %}
+	<div>
+		<h5>Recent Posts</h5>
+		<ul class="list-unstyled">
+			{% for article in blogs[settings.page_sidebar_posts].articles limit: 5 %}
+				<li><a href="{{ article.url }}">{{ article.title }}</a>
+			{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
+</div>

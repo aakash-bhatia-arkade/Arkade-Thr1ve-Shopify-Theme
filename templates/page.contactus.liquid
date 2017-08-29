@@ -1,0 +1,30 @@
+<!-- templates/page.liquid -->
+
+<!-- <table height="auto" width="100%"
+ background="https://cdn.shopify.com/s/files/1/1529/8583/files/THR1VE_officeperks_top.png?9533321332922105526" >
+<tr><td><BR><BR><BR><BR><BR><BR><BR><center><img src="https://cdn.shopify.com/s/files/1/1529/8583/files/THR1VE_officeperks_top_logo.png?17052098465827124585" width="150px"><BR>
+<h2 style="text-align: center; font-size: 60px; line-height: 65px; font-weight: 400; color:#ffffff;"><strong>OFFICE PERKS</strong></h2>
+<h2 style="text-align: center; font-size: 16px; line-height: 28px; font-weight: 400; color:#ffffff;">Increase mental performance & boost productivity in your workplace 
+  <BR>Let's chat! <a href="mailto:home@thr1ve.me">home@thr1ve.me</a> or <B>(02) 9042 1220</B></h2>
+</center><BR><BR><BR><BR><BR><BR><BR><BR><BR></td></tr>
+</table> -->
+
+
+<div class="container" id="page-content">
+	<div class="row" id="page-title">
+		<div class="col-sm-12">
+			
+		</div>
+	</div>
+	<div class="row">
+		<div class="{% if settings.enable_page_sidebar %}col-sm-9{% else %}col-sm-12{% endif %}">
+			{{ page.content }}
+		</div>
+		
+		{% if settings.enable_page_sidebar %}
+			{% include 'page-sidebar' %}
+		{% endif %}
+		
+	</div>
+</div>
+  <img src="https://cdn.shopify.com/s/files/1/1529/8583/files/THR1VE_deliveryareas_bottom.jpg?16290393152862853577" width=100%;>

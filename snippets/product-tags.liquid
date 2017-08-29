@@ -1,0 +1,10 @@
+{% assign allowedTags = "nut-free|dairy-free|seafood-free|vegetarian|keto-friendly|post-training" | split: "|" %}
+<ul class="list-unstyled">
+	{% for tag in product.tags %}
+		{% assign tagFormatted = tag | downcase | handleize %}
+		{% if allowedTags contains tagFormatted %}
+			{% assign imageName = tagFormatted | append: '.png' %}
+			<li>{{ imageName | asset_url | img_tag: tag, "icon" }}{% if tagText %} {{ tag | capitalize }}{% endif %}</li>
+		{% endif %}
+	{% endfor %}
+</ul>

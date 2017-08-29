@@ -1,0 +1,87 @@
+{{ 'moment.min.js' | asset_url | script_tag }}
+
+<script>
+  var calculateDeliveryDates = function(formatted_date){
+      window.deliveryCalc = {};
+      window.deliveryRules = {
+          startDay : 7,
+          endDay: 1,
+          offsets: [
+              [0,7,1,2,3,4,5,6], // Monday 
+              [2,4,5,6,7,1,2,3], // Tuesday
+              [1,4,5,6,7,1,2,3], // Wednesday
+              [0,4,5,6,7,1,2,3], // Thursday
+              [3,7,1,2,3,4,5,6], // Friday
+              [2,7,1,2,3,4,5,6], // Saturday
+              [1,7,1,2,3,4,5,6]  // Sunday
+          ]
+      }
+
+      var todayDayOfWeek = moment(formatted_date).format('E');
+      /*
+  	   *	Delivery window 1 Tuesday - Thursday -> delivered Sunday - Monday
+  	   *	Delivery window 2 Friday - Monday -> delivered Wednesday - Thursday
+  	   */
+      var todayDayOfWeek = moment(formatted_date).format('E');
+      if(todayDayOfWeek >= 2 && todayDayOfWeek <= 4){
+        window.deliveryRules.startDay = 7;
+        window.deliveryRules.endDay = 1;
+      } else {
+      	window.deliveryRules.startDay = 3;
+        window.deliveryRules.endDay = 4;
+      }
+    
+      var todayDeliveryRules = deliveryRules.offsets[todayDayOfWeek - 1];
+      var startDayOffset = todayDeliveryRules[deliveryRules.startDay] + todayDeliveryRules[0];
+      var endDayOffset = todayDeliveryRules[deliveryRules.endDay] + todayDeliveryRules[0];
+
+      return {
+        cutOffDay : moment(formatted_date).add(todayDeliveryRules[0], 'd').hour(23).minute(59).second(59),
+        startDay : moment(formatted_date).add(startDayOffset, 'd'),
+        endDay :  moment(formatted_date).add(endDayOffset, 'd')
+      }
+  }
+
+  var renderDeliveryDates = function(){
+    var deliveryCalc = window.deliveryCalc;
+
+    // Delivery countdown
+    if(document.getElementById('delivery_card_countdown')){
+        setInterval(function(){
+
+            diffPoint1 = moment(deliveryCalc.cutOffDay).format('YYYY-MM-DD H:mm:ss');
+            diffPoint2 = moment().tz('Australia/Sydney').format('YYYY-MM-DD H:mm:ss');
+            //has to do calculation as its done here.Diff does not consider tmezoned moment
+            var difference = moment.duration(moment(diffPoint1, 'YYYY-MM-DD H:mm:ss').diff(moment(diffPoint2, 'YYYY-MM-DD H:mm:ss')));
+            var days = difference.days() > 0 ? difference.days() + 'd ' : '';
+            var hours = difference.hours() > 0 ? difference.hours() + 'h ' : '';
+            var minutes = difference.minutes() > 0 ? difference.minutes() + 'm ' : '';
+
+            var deliveryCardCountdownValue = days + hours + minutes + difference.seconds() + 's ';
+            document.getElementById('delivery_card_countdown').innerHTML = deliveryCardCountdownValue;
+        }, 1000);
+    }
+
+
+    // Delivery range
+    if(document.getElementById('delivery_card_daterange')){
+        var monthDivider = ' - ';
+        if(deliveryCalc.startDay.format('M') !== deliveryCalc.endDay.format('M')){
+            monthDivider = deliveryCalc.startDay.format('MMM') + ' - ';
+        }
+      
+      	var deliveryDateRangeValue;
+      
+      	if(deliveryCalc.startDay.valueOf() == deliveryCalc.endDay.valueOf()) {
+      		deliveryDateRangeValue = deliveryCalc.endDay.format('ddd Do MMM');
+        } else {
+        	deliveryDateRangeValue = deliveryCalc.startDay.format('ddd Do ') + monthDivider + deliveryCalc.endDay.format('ddd Do MMM');
+        }
+
+        document.getElementById('delivery_card_daterange').innerHTML = deliveryDateRangeValue;
+    }
+  }
+
+  window.deliveryCalc = calculateDeliveryDates(moment().tz('Australia/Sydney').format());
+  renderDeliveryDates();
+</script>

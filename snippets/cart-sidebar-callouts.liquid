@@ -1,0 +1,33 @@
+<div class="cart-callout">
+	
+	<div class="callout-thumb">
+		
+		{{ 'truck.png' | asset_url | img_tag: 'Shipping', 'shipping-thumb' }}
+
+	</div>
+
+	<div class="callout-content">
+		<p>
+          We offer free delivery on all orders over {% raw %}{{{freeShippingMinimum}}}{% endraw %}<br>
+          {% raw %}{{{freeShippingMessage}}}{% endraw %}
+      	</p>
+		<p>You can select your next delivery time and date from <strong id="cart_callout_daterange"></strong></p>
+		<p class="delivery-info-link"><a href="{{settings.banner_terms}}">Learn More</a></p>
+	</div>
+
+
+</div>
+
+<div class="cart-callout">
+	
+	<div class="callout-thumb">
+		
+		{{ 'snowflake.png' | asset_url | img_tag: 'Freeze Meals', 'freeze-thumb' }}
+
+	</div>
+
+	<div class="callout-content">
+		<p>{{ settings.frozen_meal_cart_notice }}</p>
+	</div>
+
+</div>

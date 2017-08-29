@@ -1,0 +1,26 @@
+<!-- snippets/page.contactform.liquid -->
+
+<table height="auto" width="100%"
+ background="" >
+  <tr><td>[powr-multi-slider label="Protocol"]
+
+</center></td></tr>
+</table>
+
+<div class="container" id="page-content">
+	<div class="row" id="page-title">
+		<div class="col-sm-12">
+			
+		</div>
+	</div>
+	<div class="row">
+		<div class="{% if settings.enable_page_sidebar %}col-sm-9{% else %}col-sm-12{% endif %}">
+			{{ page.content }}
+		</div>
+		
+		{% if settings.enable_page_sidebar %}
+			{% include 'page-sidebar' %}
+		{% endif %}
+		
+	</div>
+</div>

@@ -1,0 +1,19 @@
+<!-- templates/page.liquid -->
+
+<div class="container" id="page-content">
+	<div class="row" id="page-title">
+		<div class="col-sm-12">
+			
+		</div>
+	</div>
+	<div class="row">
+		<div class="{% if settings.enable_page_sidebar %}col-sm-9{% else %}col-sm-12{% endif %}">
+			{{ page.content }}<script  type="text/javascript" src="https://shopifyexpert.com.au/modifylightbox/assets/lightbox/mdflbx_main.js"></script><script  type="text/javascript">var resetPreview = function($) { $.removeCookie("mdlbx_2b3807",{ path: "/" });$.removeCookie("mdlbx_2b3807_start_browsing",{ path: "/" });$.removeCookie("mdlbx_2b3807_clicks",{ path: "/" });$.removeCookie("mdlbx_2b3807_mailchimp_submited",{ path: "/" });$.removeCookie("mdlbx_2b3807_shopify_submited",{ path: "/" }); }; resetPreview(modlbjQuery);</script><script type="text/javascript" src="https://shopifyexpert.com.au/modifylightbox/assets/lightboxes/thr1ve-dev-store.myshopify.com/mdlbx_a735c2_2b3807.js?u=1496070896"></script>
+		</div>
+		
+		{% if settings.enable_page_sidebar %}
+			{% include 'page-sidebar' %}
+		{% endif %}
+		
+	</div>
+</div>

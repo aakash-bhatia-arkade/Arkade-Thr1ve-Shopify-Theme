@@ -1,0 +1,39 @@
+{% if settings.collection_sidebar_filter %}
+	{% if collection.all_tags.size > 0 %}
+	<div class="{{ container_class }} filter-wrap">
+		<div class="filters-content">
+        	<p class="heading"><B>Meals are guaranteed <BR>to not contain the allergen in any ingredient.</B></p>
+			<p>However, we cannot guarantee against cross contamination, as trace elements may be present</p>
+		</div>
+      	{% assign show_other = false %}
+		<ul class="list-unstyled css-ul-filter">
+			{% for tag in collection.all_tags %}
+          		{% if tag == 'Other' %}
+                  {% assign show_other = true %}
+                {% else %}
+                  <li>
+                     {% if current_tags contains tag %}
+                     <input id="{{checkbox_class}}-tags-{{ tag | replace: ' ', '-' | downcase }}" checked="checked" class="js-{{checkbox_class}}-tags" type="checkbox" name="filter_tags" value="{{ tag | handle }}" />
+                     {% else %}
+                     <input id="{{checkbox_class}}-tags-{{ tag | replace: ' ', '-' | downcase }}" type="checkbox" class="js-{{checkbox_class}}-tags" name="filter_tags" value="{{ tag | handle }}" />
+                     {% endif %}
+                     <label for="{{checkbox_class}}-tags-{{ tag | replace: ' ', '-' | downcase }}">{{ tag | capitalize }}</label>
+					</li>
+                {% endif %}
+			{% endfor %}
+          	{% if show_other == true %}
+          		{% assign tag = 'Other' %}
+          		<li>
+                     {% if current_tags contains tag %}
+                     <input id="{{checkbox_class}}-tags-{{ tag | replace: ' ', '-' | downcase }}" checked="checked" class="js-{{checkbox_class}}-tags" type="checkbox" name="filter_tags" value="{{ tag | handle }}" />
+                     {% else %}
+                     <input id="{{checkbox_class}}-tags-{{ tag | replace: ' ', '-' | downcase }}" type="checkbox" class="js-{{checkbox_class}}-tags" name="filter_tags" value="{{ tag | handle }}" />
+                     {% endif %}
+                     <label for="{{checkbox_class}}-tags-{{ tag | replace: ' ', '-' | downcase }}">{{ tag | capitalize }}</label>
+				</li>
+          	{% endif %}
+  		</ul>
+  		<p class="clear-filters-wrap"><a href="javascript:void(0)" class="clear-filters">Clear</a></p>
+	</div>
+	{% endif %}
+{% endif %}

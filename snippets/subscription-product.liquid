@@ -1,0 +1,721 @@
+
+<!-- Subscriptions Powered by ReCharge Payments: Begin Liquid Code -->
+<!--
+	Subscriptions Powered by ReCharge Payments
+	http://rechargepayments.com: v2 - Multiple Forms
+	Updated 2017/01/06
+-->
+{% if product.metafields.subscriptions.subscription_id %}
+	<!-- Subscriptions Powered by ReCharge Payments: Meta Fields -->
+		{% if product.metafields.subscriptions.is_subscription_only == 'true' or product.tags contains 'Subscription Only' or product.tags contains 'subscription only' or product.tags contains 'Subscription only' or product.tags contains 'subscriptiononly' %}
+			{% assign subscription_only = 'true' %}
+		{% else %}
+			{% assign subscription_only = 'false' %}
+		{% endif %}
+		{% assign subscriptions = shop.metafields.subscriptions %}
+		<!-- Pruchase Options -->
+		{% if subscriptions.onetime_message %}
+			{% assign widget_onetime_message = subscriptions.onetime_message %}
+		{% else %}
+			{% assign widget_onetime_message = 'One-time purchase' %}
+		{% endif %}
+		{% if subscriptions.subscribe_message %}
+			{% assign widget_subscribe_message = subscriptions.subscribe_message %}
+		{% else %}
+			{% assign widget_subscribe_message = 'Subscribe &amp; Save' %}
+		{% endif %}
+		{% if subscriptions.font_color %}
+			{% assign font_color = subscriptions.font_color %}
+		{% else %}
+			{% assign font_color = '#000' %}
+		{% endif %}
+		{% if subscriptions.background_color %}
+			{% assign background_color = subscriptions.background_color %}
+		{% else %}
+			{% assign background_color = '#fff' %}
+		{% endif %}
+		{% if subscriptions.widget_deliver_every %}
+			{% assign widget_deliver_every = subscriptions.widget_deliver_every %}
+		{% else %}
+			{% assign widget_deliver_every = 'Deliver every' %}
+		{% endif %}
+		<!-- See details link -->
+		{% if subscriptions.see_details %}
+			{% assign widget_see_details = subscriptions.see_details %}
+		{% else %}
+			{% assign widget_see_details = 'See details' %}
+		{% endif %}
+		<!-- Subscription details popup -->
+		{% if subscriptions.how_it_works %}
+			{% assign widget_how_it_works = subscriptions.how_it_works %}
+		{% else %}
+			{% assign widget_how_it_works = "<strong>How subscriptions work</strong><br><br>Products are automatically delivered on your schedule. No obligation, modify or cancel your subscription anytime." %}
+		{% endif %}
+		<!-- Subscription Widget Settings -->
+		{% if product.metafields.subscriptions.shipping_interval_unit_type.size > 0 %}
+			{% assign shipping_interval_unit_type = product.metafields.subscriptions.shipping_interval_unit_type %}
+		{% else %}
+			{% assign shipping_interval_unit_type = 'Days' %}
+		{% endif %}
+		{% if product.metafields.subscriptions.shipping_interval_frequency.size > 0 %}
+			{% assign shipping_interval_frequency = product.metafields.subscriptions.shipping_interval_frequency | split: ',' %}
+		{% else %}
+			{% assign shipping_interval_frequency = '30' %}
+		{% endif %}
+		{% assign discount_percentage_no_decimals = product.metafields.subscriptions.discount_percentage | floor %}
+		{% assign discount_percentage = product.metafields.subscriptions.discount_percentage | round: 2 %}
+		{% if discount_percentage_no_decimals == discount_percentage %}
+		     {% assign discount_percentage = discount_percentage_no_decimals %}
+		{% endif %}
+	{% assign subscription_id = product.metafields.subscriptions.subscription_id %}
+	<style>
+		/* Subscriptions Powered by ReCharge Payments: CSS */
+		/* Widget: Subscription */
+		#recurring_choice_{{ product.id }} {
+			margin: 10px 0;
+		}
+		span.rc_container {
+			width: 100%;
+		}
+		/* Tool Tip CSS */
+		span.subscription-tooltip {
+			outline: none;
+			position: relative !important;
+		}
+		span.subscription-tooltip strong {
+			line-height: 30px;
+		}
+		span.subscription-tooltip:hover {
+			text-decoration: none;
+		}
+		span.subscription-tooltip span {
+			z-index: 10;
+			display: none;
+			padding: 14px 20px;
+			margin-top: 20px;
+			margin-left: 28px;
+			width: 240px;
+			line-height: 16px;
+		}
+		span.subscription-tooltip:hover span {
+			display: inline;
+			position: absolute;
+			left: -250px;
+			color: #111111;
+			border: 1px solid #333333;
+			background: #FFFFFF;
+		}
+		span.subscription-tooltip span {
+			-moz-box-shadow: 5px 5px 8px #CCCCCC;
+			-webkit-box-shadow: 5px 5px 8px #CCCCCC;
+			box-shadow: 5px 5px 8px #CCCCCC;
+		}
+		/* Recurring Upsell Widget CSS */
+		.subscription-font-color {
+			color: {{ font_color }} !important;
+		}
+		.radio_option {
+			border-radius: 4px;
+			cursor: pointer;
+			margin: 0;
+			padding: 8px;
+			font-family: "Arial", "Helvetica", sans-serif;
+			width: 98%;
+			border: 1px solid transparent;
+		}
+		.radio_option.active {
+			border: 1px solid {{ background_color }} !important;
+			background-color: {{ background_color }} !important;
+		}
+		.radio_option input {
+			margin: 0 4px 0 0;
+			padding: 0 0 0 5px;
+		}
+		
+		
+		.radio_option input[type="number"] {
+			width: 40px;
+		}
+		#auto_deliver_label {
+			font-weight: bold !important;
+			width: 90% !important;
+		}
+		.radio_option label {
+			width: auto;
+			font-weight: normal !important;
+			position: relative;
+			display: inline-block
+		}
+		.offer_newline {
+			margin-top: 5px;
+		}
+		#see-details {
+			color: rgb(86, 148, 82);
+			text-decoration: underline;
+			text-transform: none;
+			opacity: 1;
+		}
+		#see-details:before {
+			content: "";
+			display: inline-block;
+			width: 19px;
+			height: 19px;
+			background-image: url('//bcassets-rechargeapps.netdna-ssl.com/static/images/recharge-icon-w-2.png');
+			background-repeat: no-repeat;
+			background-position: 50% 50%;
+			vertical-align: middle;
+			margin-right: 4px;
+			border-radius: 2px;
+			background-color: #2D93AC;
+		}
+		select#fake_shipping_interval_frequency_{{ product.id }} {
+			display: inline-block;
+			height: auto;
+		}
+		.radio_option label {
+			cursor: pointer;
+		}
+		/* Fix for launchpad */
+		.autodeliver {
+			-webkit-appearance: radio;
+		}
+		/* Client requested changes */
+		#see-details {
+			color: #2D93AC;
+		}
+		.hide-info {
+			display: none !important;
+		}
+		/* Add custom CSS below */
+
+	</style>
+	<!-- Subscriptions Powered by ReCharge Payments: HTML -->
+	<section id="recurring_choice_{{ product.id }}" style="display: none;" class="rc_container">
+		<!-- <input id="subscription_id_{{ product.id }}" name="" id="" value="{{ subscription_id }}" style="display: none;"> -->
+		<div id="single_purchase_{{ product.id }}" class="radio_option radio_option__single {{ product.id }}">
+			<label for="autodeliver_off_radio_{{ product.id }}" id="auto_deliver_label" class="subscription-font-color">
+				<input type="radio" name="autodeliver_{{ product.id }}" class="autodeliver {{ product.id }}" value="onetime"{% if subscription_only == 'false' %} checked{% endif %} id="autodeliver_off_radio_{{ product.id }}">
+				{% if discount_percentage > 0 %}
+					<span>{{ widget_onetime_message }}</span>
+					<span id="one-time-price_{{ product.id }}"></span>
+				{% else %}
+					<span>{{ widget_onetime_message }}</span>
+				{% endif %}
+			</label>
+		</div><!-- .radio_option -->
+		<div id="recurring_purchase_{{ product.id }}" class="radio_option radio_option__recurring {{ product.id }}">
+			<label for="autodeliver_on_radio_{{ product.id }}" id="auto_deliver_label" style="font-weight: bold;">
+				<input type="radio" name="autodeliver_{{ product.id }}" class="autodeliver {{ product.id }}" value="autodeliver"{% if subscription_only == 'true' %} checked{% endif %} id="autodeliver_on_radio_{{ product.id }}">
+				<span class="subscription-font-color">{{ widget_subscribe_message }}</span>
+				{% if discount_percentage > 0 %}
+					<span>{{ discount_percentage }}%</span> <span id="recurring-time-price_{{ product.id }}"></span>
+				{% endif %}
+			</label>
+			<div class="offer_newline">
+				<label>
+					<span class="subscription-font-color" style="margin-left: 0px;">
+						{{ widget_deliver_every }}
+						{% if shipping_interval_frequency.size == 1 %}
+							<input type="hidden" name="" id="fake_shipping_interval_frequency_{{ product.id }}" value="{{ shipping_interval_frequency }}">
+							<span>
+								{{ shipping_interval_frequency[0] }}
+								<!-- Display "1 Month" not "1 Months" -->
+								{% if shipping_interval_frequency[0] == "1" and shipping_interval_unit_type == 'Months' %}
+									Month
+								{% elsif shipping_interval_frequency[0] == "1" and shipping_interval_unit_type == 'Weeks' %}
+									Week
+								{% else %}
+									{{ shipping_interval_unit_type }}
+								{% endif %}
+							</span>
+						{% elsif shipping_interval_frequency.size > 1 %}
+							<select name="" id="fake_shipping_interval_frequency_{{ product.id }}">
+								{% for frequency in shipping_interval_frequency %}
+									<option value="{{ frequency }}">
+										{{ frequency }}
+										<!-- Display "1 Month" not "1 Months" -->
+										{% if frequency == "1" and shipping_interval_unit_type == 'Months' %}
+											Month
+										{% elsif frequency == "1" and shipping_interval_unit_type == 'Weeks' %}
+											Week
+										{% else %}
+											{{ shipping_interval_unit_type }}
+										{% endif %}
+									</option>
+								{% endfor %}
+							</select>
+						{% endif %}
+					</span>
+				</label>
+				{% capture poweredby_url %}http://www.rechargeapps.com/subscribe-with-recharge?utm_source=shopify%20store&utm_medium=customer%20link{{ see_details_url }}&utm_campaign=Shopify%20store%20back%20link&shop={{ shop.permanent_domain }}&shop_name={{ shop.name }}{% endcapture %}
+				<a href="{{ poweredby_url }}" target="_blank" rel="nofollow" class="subscription-tooltip subscription-font-color" id="see-details" style="margin-left: 0px; text-transform: none;">{{ widget_see_details }}</a>
+			</div><!-- .offer_newline -->
+		</div><!-- .radio_option -->
+	</section><!-- .rc_container -->
+	<script>
+		// Subscriptions Powered by ReCharge Payments: JavaScript
+		(function() {
+			// "use strict";
+			window.rechargedebug = {};
+			window.script_inclusion;
+			window.currency_prefix = "$"; // $ £
+			window.currency_suffix = " AUD"; //
+			window.lock_{{ product.id }} = false;
+			window.first_time_{{ product.id }} = true;
+			if (window.script_inclusion === undefined) {
+				window.script_inclusion = 1;
+			} else {
+				window.script_inclusion += 1;
+			}
+			rechargedebug["# of times ReCharge is included "] = window.script_inclusion;
+			// Basic function to load script files, will be used to include jQuery
+			var loadScript = function(url, callback) {
+				// "use strict";
+				var script = document.createElement("script");
+				script.type = "text/javascript";
+				// If the browser is Internet Explorer
+				if (script.readyState) {
+					script.onreadystatechange = function () {
+						if (script.readyState === "loaded" || script.readyState === "complete") {
+							script.onreadystatechange = null;
+							callback();
+						}
+					};
+				// For any other browser
+				} else {
+					script.onload = function () {
+						callback();
+					};
+				}
+				script.src = url;
+				document.getElementsByTagName("head")[0].appendChild(script);
+			};
+			// This is our JavaScript that we'll run after jQuery is included
+			var reChargeJS_{{ product.id }} = function ($) {
+				// "use strict";
+				$(function () {
+					function reChargeGetCookie(name) {
+						// Cookie will be used to check if test mode notification was used
+						return (document.cookie.match("(^|; )" + name + "=([^;]*)") || 0)[2];
+					}
+					function reChargeGetURLParameter(desired_param) {
+						// A URL parameter will determine if ReCharge is in test mode
+						var url = window.location.search.substring(1);
+						var url_params = url.split("&");
+						var param_value = false;
+						url_params.forEach(function (parameter) {
+							var param_name = parameter.split("=");
+							if (param_name[0] === desired_param && desired_param === "variant") {
+								if (param_name[1] !== undefined) {
+									param_value = param_name[1];
+								} else {
+									param_value = false;
+								}
+							} else if (param_name[0] === desired_param && desired_param !== "variant") {
+								param_value = true;
+							}
+						});
+						return param_value;
+					}
+					function reChargeTestModeNotification() {
+						// Test Mode will trigger an alert notification - We'll show it only once
+						if (reChargeGetCookie("recharge") === "true") {
+							window.alert("Hi! You are previewing recharge. You can clear your cookies to view as a normal shopper.");
+						}
+						document.cookie = "recharge=true; path=/";
+					}
+					function isReChargeTestModeEnabled(override) {
+						// Test mode is used by isActiveSubscription, acting as an override to allow the script to continue to run, as if the subscription was active
+						if (override === true || reChargeGetURLParameter("recharge") === true) {
+							window.rechargedebug["isReChargeTestModeEnabled"] = true;
+							return true;
+						}
+						window.rechargedebug["isReChargeTestModeEnabled"] = false;
+						return false;
+					}
+					function showSubscriptionWidget() {
+						window.rechargedebug["showSubscriptionWidget()"] = true;
+						$("[id=\"recurring_choice_{{ product.id }}\"]").show();
+					}
+					function hideSinglePurchaseOption() {
+						window.rechargedebug["showSinglePurchaseOption()"] = false;
+						$("[id=\"single_purchase_{{ product.id }}\"]").hide();
+					}
+					function hideRecurringPurchaseOption() {
+						window.rechargedebug["showSinglePurchaseOption()"] = false;
+						$("[id=\"recurring_purchase_{{ product.id }}\"]").find('#auto_deliver_label').hide();
+					}
+					function buildVariantIdToDiscountIdMap() {
+						// Build Variant ID to Discount ID map
+						var variant_id__to__discount_id = {};
+						{% for variant in product.variants %}
+							var discount_variant_id = "{{ variant.metafields.subscriptions.discount_variant_id }}";
+							variant_id__to__discount_id["{{ variant.id }}"] = "";
+							if (discount_variant_id) {
+								variant_id__to__discount_id["{{ variant.id }}"] = {
+									"discount_variant_id": discount_variant_id
+								};
+							}
+						{% endfor %}
+						return variant_id__to__discount_id;
+					}
+					function buildVariantPriceToDiscountPriceMap() {
+						// build Variant Price to Discount Price map
+						var variant_price__to__discount_price = {};
+						{% for variant in product.variants %}
+							var discount_variant_price = "{{ variant.metafields.subscriptions.discount_variant_price }}";
+							variant_price__to__discount_price["{{ variant.id }}"] = "";
+							if (discount_variant_price) {
+								variant_price__to__discount_price["{{ variant.id }}"] = {
+									"discount_variant_price": discount_variant_price
+								}
+							}
+						{% endfor %}
+						return variant_price__to__discount_price;
+					}
+					function buildVariantIdToPriceMap() {
+						// Build a Variant ID to price map
+						var vairant_id__to__price = {};
+						{% for variant in product.variants %}
+							vairant_id__to__price["{{ variant.id }}"] = "{{ variant.price }}";
+						{% endfor %}
+						return vairant_id__to__price;
+					}
+					function isActiveSubscription() {
+						// Returns true if the product has an active subscription, or true if in test mode
+						{% if shop.metafields.subscriptions.subscription_active == 'true' %}
+							var subscription_on = true;
+						{% else %}
+							var subscription_on = false;
+						{% endif %}
+						window.rechargedebug["isActiveSubscription()"] = subscription_on;
+						if (isReChargeTestModeEnabled()) {
+							subscription_on = true;
+						}
+						return subscription_on;
+					}
+					function isSubscriptionOnly() {
+						// Returns true if product is Subscrtiption Only, with no "one time purchase" option available
+						{% if product.metafields.subscriptions.is_subscription_only == 'true' or product.tags contains 'Subscription Only' or product.tags contains 'subscription only' or product.tags contains 'Subscription only' or product.tags contains 'subscriptiononly' %}
+							var is_subscription_only = true;
+						{% else %}
+							var is_subscription_only = false;
+						{% endif %}
+						window.rechargedebug["isSubscriptionOnly()"] = is_subscription_only;
+						return is_subscription_only;
+					}
+					function hasMultipleFrequencyOptions() {
+						// Return true if product has more than one shipping frequency options
+						{% if shipping_interval_frequency.size > 1 %}
+							var has_multiple_frequency_options = true;
+						{% else %}
+							var has_multiple_frequency_options = false;
+						{% endif %}
+						window.rechargedebug["hasMultipleFrequencyOptions()"] = has_multiple_frequency_options;
+						return has_multiple_frequency_options;
+					}
+					function hasDiscount() {
+						// Return true if product has a discount - discount amount is not used in this script
+						var discount_percentage_metafield_value = "{{ product.metafields.subscriptions.discount_percentage | floor }}";
+						var has_discount = false;
+						if (parseInt(discount_percentage_metafield_value) > 0) {
+							has_discount = true;
+						}
+						window.rechargedebug["hasDiscount()"] = has_discount;
+						return has_discount;
+					}
+					function isSubscriptionSelected(override) {
+						var input = $("input.autodeliver:checked");
+						var value = input.val();
+						if (value === "autodeliver") {
+							return true;
+						}
+						return false;
+					}
+					function getVariantPrice() {
+						// Get original product variant price using the Original Variant ID to Original Variant Price map
+						var original_variant_id = original_select.val();
+						var original_variant_price = (variant_id_to_price_map[original_variant_id] / 100);
+						var variant_price = false;
+						// If discount variant exists, get duplicate price using the Original Variant Price to Discount Variant Price map
+						var discount_variant_id = variant_id_to_discount_id_map[original_variant_id]["discount_variant_id"];
+						if (isSubscriptionSelected() === true && discount_variant_id !== "") {
+							variant_price = variant_price_to_discount_price_map[original_variant_id]["discount_variant_price"];
+						} else {
+							variant_price = original_variant_price;
+						}
+						return variant_price;
+					}
+					function formatPrice(variant_price, quantity) {
+						// Outputs the price string, with currency prefix and suffixes
+						if (quantity === undefined) {
+							// If theme doesn't provide quantity, manually set to 1
+							var quantity = 1;
+						}
+						// Clean up the price to use 2 decimals
+						var price_currency = parseFloat(variant_price).toFixed(2);
+						// Render out the correct price based on quantity input
+						var price_calculated = parseFloat(price_currency * quantity).toFixed(2);
+						// Use the provided prefix and/or suffix to render currency
+						var price_string = currency_prefix + price_calculated + currency_suffix;
+						return price_string;
+					}
+					function getPriceSelector() {
+						var price_selectors = ".current_price, #productPrice, #ProductPrice, .product-price, .price, #price-preview, .actual-price";
+						// If more than 1 price is available, specify using product ID
+						if ($(price_selectors).length > 1) {
+							// This is usually indicative of a Quick View like feature
+							price_selectors = ".current_price.{{ product.id }}, #ProductPrice.{{ product.id }}, #productPrice.{{ product.id }}, .product-price.{{ product.id }}, .price.{{ product.id }}, #price-preview.{{ product.id }}";
+							window.rechargedebug["multiplePriceSelectors()"] = true;
+						} else {
+							window.rechargedebug["multiplePriceSelectors()"] = false;
+						}
+						return price_selectors;
+					}
+					function updatePrice() {
+						var price_selector = getPriceSelector();
+						// Get quantity and current variant price (this depends on purchase option chosen)
+						var variant_price = getVariantPrice();
+						var quantity = $("form[data-productid=\"{{ product.id }}\"][name=\"quantity\"], form[data-product-id=\"{{ product.id }}\"][name=\"quantity\"]").val();
+						var price = formatPrice(variant_price, quantity);
+						$(price_selector).html(price);
+					}
+					function updateInlinePrice() {
+						// Updates the price besides the purchase options (One-time purchase, Subscribe & Save)
+						var original_variant_id = original_select.val();
+						// Get the original product price
+						var regularPrice = variant_id_to_price_map[original_variant_id] / 100;
+						regularPrice = formatPrice(regularPrice)
+						// Get the subscription product price
+						var subscriptionPrice = variant_price_to_discount_price_map[original_variant_id]["discount_variant_price"];
+						subscriptionPrice = formatPrice(subscriptionPrice);
+						// Update the HTML variables;
+						$("[id=\"one-time-price_{{ product.id }}\"]").text(" " + regularPrice);
+						$("[id=\"recurring-time-price_{{ product.id }}\"]").text(" " + subscriptionPrice);
+					}
+					function buildDiscountSelect(discount_prices) {
+						if (!discount_prices) {
+							// If no options are provided, do not proceed with generating select element
+							return false;
+						}
+						// Create a hidden select for discount options
+						var discount_select = $("<select id=\"discount-select-{{ product.id }}\" style=\"display: none;\"></select>");
+						discount_prices.forEach(function (price) {
+							// For each discount price, create an option element
+							var discount_option = "<option value=\"" + price + "\">" + price + "</option>";
+							// Append the new option to the select list
+							discount_select.append(discount_option);
+						});
+						// Return select and options
+						return discount_select;
+					}
+					function buildSubscriptionId() {
+						var input = $("<input type=\"hidden\" id=\"subscription_id_{{ product.id }}\" name=\"\" id=\"\" value=\"{{ subscription_id }}\" style=\"display: none;\">");
+						return input;
+					}
+					function buildShippingIntervalUnitType() {
+						var input = $("<input type=\"hidden\" id=\"shipping_interval_unit_type_{{ product.id }}\" name=\"\" value=\"{{ shipping_interval_unit_type }}\" style=\"display: none;\">");
+						return input;
+					}
+					function buildShippingIntervalFrequency() {
+						{% if shipping_interval_frequency.size == 1 %}
+							var value = "{{ shipping_interval_frequency }}";
+						{% else if  %}
+							var value = "{{ shipping_interval_frequency[0] }}";
+						{% endif %}
+						var input = $("<input type=\"hidden\" id=\"shipping_interval_frequency_{{ product.id }}\" name=\"\" value=\"" + value + "\" style=\"display: none;\">");
+						return input;
+					}
+					function getDiscountVariants() {
+						// Build a list of options that will later be used to build a select form
+						var discount_variant_options = [];
+						{% for variant in product.variants %}
+							var discount_variant_id = "{{ variant.metafields.subscriptions.discount_variant_id }}";
+							if (discount_variant_id) {
+								discount_variant_options.push(discount_variant_id);
+							}
+						{% endfor %}
+						return discount_variant_options;
+					}
+					function updateDiscountVariantSelect(variant_id_to_discount_id_map, duplicate_select) {
+						// For the Discount Variant selector
+						// Use the product ID with the discount variant ID map to set the active discount option
+						var product_variant_id = original_select.val();
+						if (reChargeGetURLParameter("variant")) {
+							product_variant_id = reChargeGetURLParameter("variant");
+							window.rechargedebug["variant_id source"] = "URL Parameter";
+						} else {
+							window.rechargedebug["variant_id source"] = "Variant Selector";
+						}
+						var discount_variant_id = variant_id_to_discount_id_map[product_variant_id]["discount_variant_id"];
+						duplicate_select.find("option[value=\"" + discount_variant_id + "\"]").prop("selected", true);
+						window.rechargedebug["var product_variant_id"] = product_variant_id;
+						window.rechargedebug["var discount_variant_id"] = discount_variant_id;
+					}
+					function updateProductInputFields(value, original_select, duplicate_select, subscription_id, interval_unit_type, interval_frequency) {
+						if (isSubscriptionSelected()) {
+							// Pull product ID from the hidden product
+							original_product_id = "";
+							discount_product_id = "id";
+							// Set Subscription ID, Interval Frequency and Interval Unit Type
+							subscription_id_name = "properties[subscription_id]";
+							interval_frequency_name = "properties[shipping_interval_frequency]";
+							interval_unit_type_name = "properties[shipping_interval_unit_type]";
+						} else {
+							// Defaults to One-Time Purchase
+							// Pull product ID from the original product
+							original_product_id = "id";
+							discount_product_id = "";
+							// Remove Subscription ID, Interval Frequency and Interval Unit Type
+							subscription_id_name = "";
+							interval_frequency_name = "";
+							interval_unit_type_name = "";
+						}
+						$("[name=\"id\"]").attr("name", "");
+						// Reset the form into thinking the product id will come from the original select
+						$("[id=\"" + original_select.attr("id") + "\"]").attr("name", original_product_id);
+						$("[id=\"" + duplicate_select.attr("id") + "\"]").attr("name", discount_product_id);
+						// Remove Subscription ID, Interval Frequency and Interval Unit Type
+						$("[id=\"" + subscription_id.attr("id") + "\"]").attr("name", subscription_id_name);
+						$("[id=\"" + interval_unit_type.attr("id") + "\"]").attr("name", interval_unit_type_name);
+						$("[id=\"" + interval_frequency.attr("id") + "\"]").attr("name", interval_frequency_name);
+						window.rechargedebug["productID to be submitted"] = $("[name=\"id\"]").val();
+						window.rechargedebug["# of ProductIDs to be submitted"] = $("[name=\"id\"]").length;
+					}
+					function updateActiveClass(input) {
+						// On click, remove 'active' class from related options and apply it to selected option
+						var active_option = $(input).parents(".radio_option");
+						$(input).parents(".rc_container").find(".radio_option").removeClass("active");
+						active_option.addClass("active");
+						rechargedebug["activeSubscriptionOption"] = $(input).val();
+					}
+					if (!reChargeGetURLParameter("disable")) {
+						if (isActiveSubscription()) {
+							// Presentation: Check if Subscribe & Save is available, or if Subscription Only -- We want to fire this off as quickly as possible, to prevent "flickering" UI elements
+							if (!isSubscriptionOnly()) {
+								// Show the widget
+								showSubscriptionWidget();
+								// Show the Purchase Option: Single Purchase option
+								// Show the Purchase Option: Recurring Purchase option
+								// Show the Shipping Frequency selector
+							}
+							if (isSubscriptionOnly() && hasMultipleFrequencyOptions()) {
+								// Show the widget
+								showSubscriptionWidget();
+								// Hide the Purchase Option: Single Purchase option
+								hideSinglePurchaseOption();
+								// Hide the Purchase Option: Recurring Purchase option
+								hideRecurringPurchaseOption();
+								// Show the Shipping Frequency selector
+							}
+
+							// Get the original product variant selector
+							var original_select = $("[name=\"id\"][data-productid=\"{{ product.id }}\"], [name=\"id\"][data-product-id=\"{{ product.id }}\"]");
+
+							// Give the currently selected radio_option the class 'active'
+							$(".rc_container input:checked").parents(".radio_option").addClass("active");
+
+							// Build hidden inputs that store subscrition-related properties
+							var subscription_id = buildSubscriptionId();
+							var interval_unit_type = buildShippingIntervalUnitType();
+							var interval_frequency = buildShippingIntervalFrequency();
+							// Build the duplicate variable select dropdown with variant options
+							var duplicate_options = getDiscountVariants();
+							var duplicate_select = buildDiscountSelect(duplicate_options);
+							var product_form = $("form[data-productid=\"{{ product.id }}\"], form[data-product-id=\"{{ product.id }}\"]");
+							window.rechargedebug["product_form count"] = product_form.length;
+
+							// Append the discount select to the product form
+							product_form.append(subscription_id);
+							product_form.append(interval_unit_type);
+							product_form.append(interval_frequency);
+							product_form.append(duplicate_select);
+
+							// Generate variant ID, discount ID, pricing and discount option maps
+							var variant_id_to_discount_id_map = buildVariantIdToDiscountIdMap();
+							var variant_price_to_discount_price_map = buildVariantPriceToDiscountPriceMap();
+							var variant_id_to_price_map = buildVariantIdToPriceMap();
+
+							
+							
+
+							// Manually select the correct duplicate-product variant
+							updateDiscountVariantSelect(variant_id_to_discount_id_map, duplicate_select);
+
+							{% if subscription_only == 'true' %}
+								// If product is subscription only, force 'autodeliver' input value propagation
+								updateProductInputFields("autodeliver", original_select, duplicate_select, subscription_id, interval_unit_type, interval_frequency);
+							{% endif %}
+							// A price update is required if a discount is provided
+							if (hasDiscount()) {
+								updatePrice();
+								updateInlinePrice();
+							}
+							// Adds an active class on the currently-selected radio option
+							$(document).on("click", ".radio_option input", function () {
+								var input = $(this);
+								// Update the highlighted purchase option
+								updateActiveClass(input);
+								// A price update is required if a discount is provided
+								if (hasDiscount()) {
+									updatePrice();
+									updateInlinePrice();
+								}
+							});
+							$(document).on("change", "#fake_shipping_interval_frequency_{{ product.id }}", function () {
+								var value = $(this).val();
+								$("[id=\"shipping_interval_frequency_{{ product.id }}\"]").val(value);
+							});
+							$(document).on("change", "#quantity, .single-option-selector", function () {
+								// A price update is required if a discount is provided
+								if (hasDiscount()) {
+									updatePrice();
+									updateInlinePrice();
+								}
+							});
+							// Each time a different variant is selected, update the duplicate-product variant select
+							$(document).on("change", "form[data-productid=\"{{ product.id }}\"] .single-option-selector, form[data-product-id=\"{{ product.id }}\"] .single-option-selector", function() {
+								updateDiscountVariantSelect(variant_id_to_discount_id_map, duplicate_select);
+							});
+							// Each time a choice is made between a One-Time purchase or Recurring orders
+							$(document).on("change", ".autodeliver.{{ product.id }}", function() {
+								var value = $(this).val();
+								updateProductInputFields(value, original_select, duplicate_select, subscription_id, interval_unit_type, interval_frequency);
+							});
+						}
+						if (isReChargeTestModeEnabled()) {
+							// Trigger Test Mode alert
+							reChargeTestModeNotification();
+							console.log("ReCharge Test Mode");
+							window.rechargedebug["productID to be submitted"] = $("[name=\"id\"]").val();
+							window.rechargedebug["# of ProductIDs to be submitted"] = $("[name=\"id\"]").length;
+							console.log(rechargedebug);
+							// console.log('---------');
+							// console.log('Variant ID to Discount ID map');
+							// console.log(variant_id_to_discount_id_map);
+							// console.log('Variant Price to Discount Price map');
+							// console.log(variant_price_to_discount_price_map);
+							// console.log('Variant ID to Price map');
+							// console.log(variant_id_to_price_map);
+							// console.log('---------');
+						}
+					} else {
+						$("#ProductSelect-product-template").show();
+						$("#ProductSelect-product-template").attr("css", "display: block !important");
+					}
+				});
+			};
+			// Check if jQuery is added, if not, then we'll loadScript, otherwise, run reChargeJS
+			if ((typeof(jQuery) == "undefined") || (parseInt(jQuery.fn.jquery) === 1 && parseFloat(jQuery.fn.jquery.replace(/^1\./,"")) < 7.2)) {
+				// We'll get our jQuery from Google APIs
+				loadScript("//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js", function() {
+					jQuery172 = jQuery.noConflict(true);
+					reChargeJS_{{ product.id }}(jQuery172);
+				});
+			} else {
+				reChargeJS_{{ product.id }}(jQuery);
+			}
+		})();
+	</script>
+{% endif %}
+<!-- Subscriptions Powered by ReCharge Payments: End Liquid Code -->

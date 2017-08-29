@@ -1,0 +1,59 @@
+<!-- Collections -->
+
+{% paginate collection.products by settings.product_paginate %}
+
+<div class="container" id="page-content">
+	<div class="row" id="page-title">
+		<div class="col-md-12">
+			<h1>{{ collection.title }}</h1>
+		</div>
+	</div>
+	
+	{% if settings.collection_sidebar %}
+		<div class="row">
+			
+			{% include 'collection-sidebar' %}
+			
+			<div class="col-sm-9">
+	{% endif %}	
+	
+	
+	
+				{% if collection.description != blank %}
+				<div class="row">
+					<div class="col-md-12" id="collection-description">
+						{{ collection.description }}
+					</div>
+				</div>
+				{% endif %}
+				
+				{% if settings.enable_sorting_views %}
+				<div class="row" id="collection-sorting">
+					{% include 'collection-sorting' %}
+					{% include 'collection-views' %}		
+				</div>
+				{% endif %}
+				
+			    <div class="row">
+			    {% for product in collection.products %}
+			        	{% include 'product-list-item' %}
+			    {% else %}
+			    	<div class="col-md-12">
+				    	<p>{{ 'collections.general.no_matches' | t }}</p>
+			    	</div>
+			    {% endfor %}
+			    </div>
+			
+				{% if paginate.pages > 1 %}
+					{% include 'pagination-custom'  %}
+				{% endif %}
+	
+	{% if settings.collection_sidebar %}
+			</div>
+		</div>
+	{% endif %}
+	
+	
+</div>
+
+{% endpaginate %}

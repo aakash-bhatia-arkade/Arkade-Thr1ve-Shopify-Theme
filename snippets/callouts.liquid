@@ -1,0 +1,191 @@
+{% comment %}@todo Turn the below variables into associate array{% endcomment %}
+{% assign callout_1_title =  settings.call_out_1_title %}
+{% assign callout_1_content = settings.call_out_1_content %}
+{% assign callout_1_link = settings.call_out_1_link %}
+
+{% assign callout_2_title =  settings.call_out_2_title %}
+{% assign callout_2_content = settings.call_out_2_content %}
+{% assign callout_2_link = settings.call_out_2_link %}
+
+{% assign callout_3_title =  settings.call_out_3_title %}
+{% assign callout_3_content = settings.call_out_3_content %}
+{% assign callout_3_link = settings.call_out_3_link %}
+
+{% assign callout_4_title =  settings.call_out_4_title %}
+{% assign callout_4_content = settings.call_out_4_content %}
+{% assign callout_4_link = settings.call_out_4_link %}
+
+{% assign callout_5_title =  settings.call_out_5_title %}
+{% assign callout_5_content = settings.call_out_5_content %}
+{% assign callout_5_link = settings.call_out_5_link %}
+
+{% comment %}@todo Loop through the above array and remove the dupliucates{% endcomment %}
+<div class="call-out-wrap first">
+	<div class="call-out">
+		{% if callout_1_link != '' %}
+		<a href="{{ callout_1_link }}">
+		{% endif %}
+			<div class='sprite call_out_1_image'></div>
+		{% if callout_1_link != '' %}
+		</a>
+		{% endif %}
+
+		{% if callout_1_title != '' %}
+			<p class="call-out-title">
+				{% if callout_1_link != '' %}
+					<a href="{{ callout_1_link }}">
+				{% endif %}
+					<strong>{{ callout_1_title }}</strong>
+				{% if callout_1_link != '' %}
+					</a>
+				{% endif %}
+			</p>
+		{% endif %}
+
+		{% if callout_1_content != '' %}
+			<div class="call-out-content">{{ callout_1_content }}</div>
+		{% endif %}
+	</div>
+</div>
+
+<div class="call-out-wrap">
+	<div class="call-out">
+		{% if callout_1_link != '' %}
+		<a href="{{ callout_1_link }}">
+		{% endif %}
+			<div class='sprite call_out_0_image'></div>
+		{% if callout_1_link != '' %}
+		</a>
+		{% endif %}
+
+		{% if callout_1_title != '' %}
+			<p class="call-out-title">
+				{% if callout_1_link != '' %}
+					<a href="delivered fresh">
+				{% endif %}
+					<strong>delivered fresh</strong>
+				{% if callout_1_link != '' %}
+					</a>
+				{% endif %}
+			</p>
+		{% endif %}
+
+		{% if callout_1_content != '' %}
+      <div class="call-out-content"><p>delivered fresh<br><strong>freezer suitable</strong></p></div>
+		{% endif %}
+	</div>
+</div>
+
+
+
+<div class="call-out-wrap">
+	<div class="call-out">
+		{% if callout_2_link != '' %}
+		<a href="{{ callout_2_link }}">
+		{% endif %}
+			<div class='sprite call_out_2_image'></div>
+		{% if callout_2_link != '' %}
+		</a>
+		{% endif %}
+
+		{% if callout_2_title != '' %}
+			<p class="call-out-title">
+				{% if callout_2_link != '' %}
+					<a href="{{ callout_2_link }}">
+				{% endif %}
+					<strong>{{ callout_2_title }}</strong>
+				{% if callout_2_link != '' %}
+					</a>
+				{% endif %}
+			</p>
+		{% endif %}
+
+		{% if callout_2_content != '' %}
+			<div class="call-out-content">{{ callout_2_content }}</div>
+		{% endif %}
+	</div>
+</div>
+
+<div class="call-out-wrap">
+	<div class="call-out">
+		{% if callout_3_link != '' %}
+		<a href="{{ callout_3_link }}">
+		{% endif %}
+			<div class='sprite call_out_3_image'></div>
+		{% if callout_3_link != '' %}
+		</a>
+		{% endif %}
+
+		{% if callout_3_title != '' %}
+			<p class="call-out-title">
+				{% if callout_3_link != '' %}
+					<a href="{{ callout_3_link }}">
+				{% endif %}
+					<strong>{{ callout_3_title }}</strong>
+				{% if callout_3_link != '' %}
+					</a>
+				{% endif %}
+			</p>
+		{% endif %}
+
+		{% if callout_3_content != '' %}
+			<div class="call-out-content">{{ callout_3_content }}</div>
+		{% endif %}
+	</div>
+</div>
+
+<div class="call-out-wrap">
+	<div class="call-out">
+		{% if callout_4_link != '' %}
+		<a href="{{ callout_4_link }}">
+		{% endif %}
+			<div class='sprite call_out_4_image'></div>
+		{% if callout_4_link != '' %}
+		</a>
+		{% endif %}
+
+		{% if callout_4_title != '' %}
+			<p class="call-out-title">
+				{% if callout_4_link != '' %}
+					<a href="{{ callout_4_link }}">
+				{% endif %}
+					<strong>{{ callout_4_title }}</strong>
+				{% if callout_4_link != '' %}
+					</a>
+				{% endif %}
+			</p>
+		{% endif %}
+
+		{% if callout_4_content != '' %}
+			<div class="call-out-content">{{ callout_4_content }}</div>
+		{% endif %}
+	</div>
+</div>
+
+<div class="call-out-wrap last">
+	<div class="call-out">
+		{% if callout_5_link != '' %}
+		<a href="{{ callout_5_link }}">
+		{% endif %}
+			<div class='sprite call_out_5_image'></div>
+		{% if callout_5_link != '' %}
+		</a>
+		{% endif %}
+
+		{% if callout_5_title != '' %}
+			<p class="call-out-title">
+				{% if callout_5_link != '' %}
+					<a href="{{ callout_5_link }}">
+				{% endif %}
+					<strong>{{ callout_5_title }}</strong>
+				{% if callout_5_link != '' %}
+					</a>
+				{% endif %}
+			</p>
+		{% endif %}
+
+		{% if callout_5_content != '' %}
+			<div class="call-out-content">{{ callout_5_content }}</div>
+		{% endif %}
+	</div>
+</div>

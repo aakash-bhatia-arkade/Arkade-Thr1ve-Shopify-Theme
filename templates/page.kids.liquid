@@ -1,0 +1,26 @@
+<!-- templates/page.liquid -->
+
+<img src="https://cdn.shopify.com/s/files/1/0640/8935/files/kidsmenuheader_7203ce8d-4956-4cb6-8366-365daf73db2c.jpg?10005688991822797330" width="100%">
+<BR><BR><BR><center>
+<h2 style="text-align: center; font-size: 40px; line-height: 35px; font-weight: 200; color:#67676a;"><strong>THR1VE KIDS</strong></h2>
+<h2 style="text-align: center; font-size: 16px; line-height: 18px; font-weight: 200; color:#000000;">Say hello to the THR1VE Kids menu - real food for happy kids</h2>
+</center>
+
+
+<div class="container" id="page-content">
+	<div class="row" id="page-title">
+		<div class="col-sm-12">
+			
+		</div>
+	</div>
+	<div class="row">
+		<div class="{% if settings.enable_page_sidebar %}col-sm-9{% else %}col-sm-12{% endif %}">
+			{{ page.content }}
+		</div>
+		
+		{% if settings.enable_page_sidebar %}
+			{% include 'page-sidebar' %}
+		{% endif %}
+		
+	</div>
+</div>

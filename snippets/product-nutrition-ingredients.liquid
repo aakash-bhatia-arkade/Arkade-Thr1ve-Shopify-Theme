@@ -1,0 +1,73 @@
+<div class="product-extra-details">
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#nutritionals">Nutritionals</a></li>
+      <li><a data-toggle="tab" href="#ingredients">Ingredients</a></li>
+      <li><a data-toggle="tab" href="#review-tab">Reviews</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="review-tab" class="tab-pane fade">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+                </div>
+            </div>
+        </div>
+        <div id="nutritionals" class="tab-pane fade in active">
+            <div class="row">
+                <div class="col-sm-8">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th class="css-center-align">Per 100g</th>
+                                <th class="css-center-align">Per Serving</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                                <td>Energy (kJ)</td>
+                                <td class="css-center-align">{{ product.metafields.text.energy_per100 }}</td>
+                                <td class="css-center-align">{{ product.metafields.text.energy_perserve }}</td>
+                            </tr> 
+                            <tr>
+                                <td>Calories (cal)</td>
+                                <td class="css-center-align">{{ product.metafields.text.calories_per100 }}</td>
+                                <td class="css-center-align">{{ product.metafields.text.calories_perserve }}</td>
+                            </tr>
+                            <tr>
+                                <td>Protein(g)</td>
+                                <td class="css-center-align">{{ product.metafields.text.protein_per100 }}</td>
+                                <td class="css-center-align">{{ product.metafields.text.protein_perserve }}</td>
+                            </tr>
+                            <tr>
+                                <td>Fat(g)</td>
+                                <td class="css-center-align">{{ product.metafields.text.fat_per100 }}</td>
+                                <td class="css-center-align">{{ product.metafields.text.fat_perserve }}</td>
+                            </tr>
+                            <tr>
+                                <td>Carbs (g)</td>
+                                <td class="css-center-align">{{ product.metafields.text.carbs_per100 }}</td>
+                                <td class="css-center-align">{{ product.metafields.text.carbs_perserve }}</td>
+                            </tr>
+                            <tr>
+                                <td>Sugars (g)</td>
+                                <td class="css-center-align">{{ product.metafields.text.sugars_per100 }}</td>
+                                <td class="css-center-align">{{ product.metafields.text.sugars_perserve }}</td>
+                            </tr>
+                            <tr>
+                                <td>Sodium (mg)</td>
+                                <td class="css-center-align">{{ product.metafields.text.sodium_per100 }}</td>
+                                <td class="css-center-align">{{ product.metafields.text.sodium_perserve }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="ingredients" class="tab-pane fade">
+            {{ product.metafields.html.ingredients }}
+        </div>
+    </div>
+</div>

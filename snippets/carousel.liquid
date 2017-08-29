@@ -1,0 +1,132 @@
+<!-- snippets/carousel.liquid -->
+
+<header id="myCarousel" class="intro carousel slide" data-ride="carousel" data-interval="4000" data-pause="none">
+  
+    
+    {% if settings.enable_slide_two %}
+    <ol class="carousel-indicators">
+        {% if settings.enable_slide_one %}<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>{% endif %}
+        {% if settings.enable_slide_two %}<li data-target="#carousel-example-generic" data-slide-to="1"></li>{% endif %}
+        {% if settings.enable_slide_three %}<li data-target="#carousel-example-generic" data-slide-to="2"></li>{% endif %}
+        {% if settings.enable_slide_four %}<li data-target="#carousel-example-generic" data-slide-to="2"></li>{% endif %}
+        {% if settings.enable_slide_five %}<li data-target="#carousel-example-generic" data-slide-to="2"></li>{% endif %}
+        {% if settings.enable_slide_six %}<li data-target="#carousel-example-generic" data-slide-to="2"></li>{% endif %}
+        {% if settings.enable_slide_seven %}<li data-target="#carousel-example-generic" data-slide-to="2"></li>{% endif %}
+        {% if settings.enable_slide_eight %}<li data-target="#carousel-example-generic" data-slide-to="2"></li>{% endif %}
+    </ol>
+    {% endif %}
+
+
+    <div class="carousel-inner">
+        
+        {% if settings.enable_slide_one %}
+        <div class="item active">
+            <div class="fill" {% if settings.enable_slide_one_img %}style="background-image:url({{ 'slide_one_image.jpg' | asset_url }});"{% endif %}>
+                {% if settings.slide_one_content != empty %}
+                <div class="carousel-description text-center hidden-xs">
+                    {{ settings.slide_one_content }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if settings.enable_slide_two %}
+        <div class="item">
+            <div class="fill" {% if settings.enable_slide_two_img %}style="background-image:url({{ 'slide_two_image.jpg' | asset_url }});"{% endif %}>
+                {% if settings.slide_two_content != empty %}
+                <div class="carousel-description text-center hidden-xs">
+                    {{ settings.slide_two_content }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if settings.enable_slide_three %}
+        <div class="item">
+            <div class="fill" {% if settings.enable_slide_three_img %}style="background-image:url({{ 'slide_three_image.jpg' | asset_url }});"{% endif %}>
+                {% if settings.slide_three_content != empty %}
+                <div class="carousel-description text-center hidden-xs">
+                    {{ settings.slide_three_content }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if settings.enable_slide_four %}
+        <div class="item">
+            <div class="fill" {% if settings.enable_slide_four_img %}style="background-image:url({{ 'slide_four_image.jpg' | asset_url }});"{% endif %}>
+                {% if settings.slide_four_content != empty %}
+                <div class="carousel-description text-center hidden-xs">
+                    {{ settings.slide_four_content }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if settings.enable_slide_five %}
+        <div class="item">
+            <div class="fill" {% if settings.enable_slide_five_img %}style="background-image:url({{ 'slide_five_image.jpg' | asset_url }});"{% endif %}>
+                {% if settings.slide_five_content != empty %}
+                <div class="carousel-description text-center hidden-xs">
+                    {{ settings.slide_five_content }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+     
+        {% if settings.enable_slide_six %}
+        <div class="item">
+            <div class="fill" {% if settings.enable_slide_six_img %}style="background-image:url({{ 'slide_six_image.jpg' | asset_url }});"{% endif %}>
+                {% if settings.slide_six_content != empty %}
+                <div class="carousel-description text-center hidden-xs">
+                    {{ settings.slide_six_content }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if settings.enable_slide_seven %}
+        <div class="item">
+            <div class="fill" {% if settings.enable_slide_seven_img %}style="background-image:url({{ 'slide_seven_image.jpg' | asset_url }});"{% endif %}>
+                {% if settings.slide_seven_content != empty %}
+                <div class="carousel-description text-center hidden-xs">
+                    {{ settings.slide_seven_content }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if settings.enable_slide_eight %}
+        <div class="item">
+            <div class="fill" {% if settings.enable_slide_eight_img %}style="background-image:url({{ 'slide_eight_image.jpg' | asset_url }});"{% endif %}>
+                {% if settings.slide_eight_content != empty %}
+                <div class="carousel-description text-center hidden-xs">
+                    {{ settings.slide_eight_content }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        
+    </div>
+
+    {% if settings.enable_slide_two %}
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+        <i class="fa fa-chevron-left"></i>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+        <i class="fa fa-chevron-right"></i>
+    </a>
+    {% endif %}
+  
+  
+
+  
+</header>

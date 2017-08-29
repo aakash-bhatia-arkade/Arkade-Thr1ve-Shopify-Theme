@@ -1,0 +1,51 @@
+<!-- Banner -->
+<div class="hero-banner" style="background-image:url( {{ settings.banner_image | img_url:'master'; }} ),linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0) );">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-10 col-md-7">
+              <a class="banner-title" href="{{settings.banner_term}}"><h1>{{settings.banner_heading}}</h1></a>
+                <!-- <h3 class="hidden-sm hidden-xs">{{settings.banner_paragraph}}</h3> -->
+            </div>
+            <div class="delivery-card col-sm-7 col-md-5">
+                <div class="delivery-card_content">
+                    <div class="delivery-card_content_upper">
+                        <p><strong>Next deliveries:</strong></p>
+                        <h2 id="delivery_card_daterange">Calculating</h2>
+                    </div>
+                    <div class="delivery-card_content_lower">
+                        <p>ORDERS CLOSE:<strong id="delivery_card_countdown"></strong></p>
+                    </div>
+                </div>
+                
+                <div class="delivery-card_after">
+                    <div class="postcode-validation {{ page.handle }}" id="postcode-banner-section">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                {% include 'postcode-check-message-section' %}
+                            </div>
+                            <div class="col-sm-12">
+                                {% include 'postcode-check-input-section', id:"footer" %}
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="learn-more">
+                                    <p>Choose your delivery day at checkout</p>
+                                    <h5><a href="https://meals.thr1ve.me/pages/delivery-information"><u>LEARN MORE</u></a></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="call-out-section hidden-sm hidden-xs">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    {% include 'calloutstatics' %}
+                </div>
+            </div>
+        </div>
+     </div>
+</div>
+

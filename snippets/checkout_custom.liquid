@@ -1,0 +1,143 @@
+<template id="delivering_to">
+  <div class="section__header">
+      <h2 class="section__title">
+        Delivering to
+      </h2>
+    </div>
+
+    <div class="section__content">
+      <div class="content-box">
+        <div class="content-box__row">
+          <div id="delivering_to_zone"></div>
+          <div id="delivering_to_cost"></div>
+        </div>
+      </div>
+    </div>
+</template>
+
+<template id="shipping_type">
+  <div class="section section-shipping-type">
+    <div class="section__header">
+      <h2 class="section__title">
+        Address type
+      </h2> 
+    </div>
+    {% if checkout.attributes.mealplan_duration %}
+        <input type="hidden" name="checkout[attributes][mealplan_duration]" value="{{checkout.attributes.mealplan_duration}}" />
+    {% endif %}
+                  {% if checkout.attributes.mealplan_image %}
+                    <input type="hidden" name="checkout[attributes][mealplan_image]" value="{{checkout.attributes.mealplan_image}}" />
+                  {% endif %}
+                  {% if checkout.attributes.mealplan_items %}
+                    <input type="hidden" name="checkout[attributes][mealplan_items]" value="{{checkout.attributes.mealplan_items}}" />
+                  {% endif %}
+                  {% if checkout.attributes.mealplan_title %}
+                    <input type="hidden" name="checkout[attributes][mealplan_title]" value="{{checkout.attributes.mealplan_title}}" />
+                  {% endif %}
+    <div class="section__content" id="address_type_selection">
+      <ul class="shipping_type_selection">
+        <li>
+          <input type="radio" name="checkout[attributes][address_type]" data-backup="address_type" id="address_type-residential" value="Residential" data-tab="residential" {% if checkout.attributes.address_type == 'Residential' or checkout.attributes.address_type == null or checkout.attributes.address_type == false or checkout.attributes.address_type == '' %}checked{% endif %}/>
+          <label for="address_type-residential">Residential</label>
+        </li>
+        <li>
+          <input type="radio" name="checkout[attributes][address_type]" data-backup="address_type" id="address_type-gated" value="Residential (Gated/Highrise)" data-tab="gated" {% if checkout.attributes.address_type == 'Residential (Gated/Highrise)' %}checked{% endif %} />
+          <label for="address_type-gated">Residential<br>(Gated/Highrise)</label>
+        </li>
+        <li>
+          <input type="radio" name="checkout[attributes][address_type]" data-backup="address_type" id="address_type-business" value="Business" data-tab="business" {% if checkout.attributes.address_type == "Business" %}checked{% endif %}/>
+          <label for="address_type-business">Business</label>
+        </li>
+      </ul>
+      <div class="tab-content" id="address_type_notes">
+        <div role="tabpanel" class="tab-pane {% if checkout.attributes.address_type == 'Business' %}active{% endif %}" id="business">
+          <div class="field field--required field--show-floating-label">
+              <div class="field__input-wrapper">
+                <label class="field__label" for="checkout_shipping_company">Business Name</label>
+                <input required placeholder="Business Name" class="field__input" size="30" name="checkout[shipping_address][company]" id="checkout_shipping_company" value="{{checkout.shipping_address.company}}">
+              </div>
+            <p class="field__message field__message--error" id="error-for-attributes-business_name">Please enter the business name</p>
+          </div>
+        </div>
+        <div class="field field--show-floating-label">
+              <div class="field__input-wrapper">
+                <label class="field__label" for="checkout_shipping_note">Delivery Instructions</label>
+                <textarea placeholder="Delivery instructions" class="field__input" name="checkout[attributes][delivery_instructions]" id="checkout_shipping_instructions">{{checkout.attributes.delivery_instructions}}</textarea>
+              </div>
+          </div>
+      </div>
+      <div class="custom_check section section--half-spacing-top section--required">
+        <div class="section__content">
+          <div class="checkbox-wrapper">
+            <div class="checkbox__input">
+              <input class="input-checkbox" type="checkbox" value="1" {% if checkout.attributes.authority_to_leave == "1" %}checked="checked"{% endif %} name="checkout[attributes][authority_to_leave]" id="checkout_authority_to_leave">
+			</div>
+            <label class="checkbox__label" for="checkout_authority_to_leave">
+              Authority to leave for an unattended delivery
+			</label>          
+		  </div>
+        </div>
+      </div>
+      <div class="custom_check section section--half-spacing-top section--required" style="position:relative; z-index: 10">
+        <div class="section__content">
+          <div class="checkbox-wrapper">
+            <div class="checkbox__input">
+              <input class="input-checkbox" type="checkbox" value="1" {% if checkout.attributes.terms_conditions == "1" %}checked="checked"{% endif %} name="checkout[attributes][terms_conditions]" id="checkout_terms_conditions">
+			</div>
+            <label class="checkbox__label" for="checkout_terms_conditions">
+              I agree to all <a href="{{settings.terms_link}}" target="blank">Terms &amp; Conditions</a>
+			</label>          
+		  </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+{% if checkout.attributes %}
+              <div>
+              {% if checkout.attributes.address_type %}
+                  <input type="hidden" name="checkout[attributes][address_type]" value="{{checkout.attributes.address_type}}" />
+              {% endif %}
+
+              {% if checkout.attributes.delivery_instructions %}
+                  <input type="hidden" name="checkout[attributes][delivery_instructions]" value="{{checkout.attributes.delivery_instructions}}" />
+              {% endif %}
+
+              {% if checkout.attributes.business_name %}
+                  <input type="hidden" name="checkout[attributes][business_name]" value="{{checkout.attributes.business_name}}" />
+              {% endif %}
+                
+              {% if checkout.attributes.terms_conditions %}
+                  <input type="hidden" name="checkout[attributes][terms_conditions]" value="{{checkout.attributes.terms_conditions}}" />
+              {% endif %}
+                
+              {% if checkout.attributes.authority_to_leave %}
+                  <input type="hidden" name="checkout[attributes][authority_to_leave]" value="{{checkout.attributes.authority_to_leave}}" />
+              {% endif %}
+
+              {% if checkout.attributes.mealplan_duration %}
+                <input type="hidden" name="checkout[attributes][mealplan_duration]" value="{{checkout.attributes.mealplan_duration}}" />
+              {% endif %}
+              {% if checkout.attributes.mealplan_image %}
+                <input type="hidden" name="checkout[attributes][mealplan_image]" value="{{checkout.attributes.mealplan_image}}" />
+              {% endif %}
+              {% if checkout.attributes.mealplan_items %}
+                <input type="hidden" name="checkout[attributes][mealplan_items]" value="{{checkout.attributes.mealplan_items}}" />
+              {% endif %}
+              {% if checkout.attributes.mealplan_title %}
+                <input type="hidden" name="checkout[attributes][mealplan_title]" value="{{checkout.attributes.mealplan_title}}" />
+              {% endif %}
+              </div>
+
+{% endif %}
+
+<script>
+	window.customCheckoutAttributes = {{ checkout.attributes | json }}
+</script>
+
+{{ 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js' | script_tag }}
+{{ 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js' | script_tag }}
+
+{{ 'checkout_address.js' | asset_url | script_tag }}
+{{ 'checkout_shipping.js' | asset_url | script_tag }}

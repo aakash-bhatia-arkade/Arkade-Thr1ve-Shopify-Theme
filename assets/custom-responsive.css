@@ -1,0 +1,19 @@
+.extra-content .custom-banner{width:100%;display:block;padding:0 80px;}
+.extra-content .custom-banner.medium-size{max-width:1400px;margin:0 auto;}
+.extra-content .custom-banner .grid.one-third{width:33%;display:inline-block;padding:40px;vertical-align:text-top;}
+.extra-content .custom-banner .grid.one-third h3{font-size:25px;text-align:center;}
+.extra-content .custom-banner .grid.one-third p{font-size:15px;line-height:22px;text-align:center;}
+.extra-content .custom-banner .title{font-size:35px;line-height:10px;text-align:center;color:#474747;margin:80px auto 0 auto;}
+.extra-content .custom-banner .subtitle{text-align:center;color:#474747;margin:20px auto;font-size:15px;}
+.extra-content .custom-banner .grid.one-third.center{text-align:center;}
+.extra-content .btn2{background-color:#000000;border:none;color:white;padding:15px 32px;text-align:center;text-decoration:none;display:inline-block;font-size:16px;letter-spacing:1.2px;width:200px;}
+.extra-content .btn-link{display:block;margin:40px auto;text-align:center;}
+.extra-content .banner-image{max-width:600px;display:block;margin:40px auto 0;width:100%;}
+@media screen and (min-width:991px){.extra-content .custom-banner .grid.one-third{width:33%;}
+.extra-content .custom-banner{padding:0 40px;}
+}
+@media screen and (min-width:481px) and (max-width:990px){.extra-content .custom-banner .grid.one-third{width:49%;}
+}
+@media screen and (max-width:480px){.extra-content .custom-banner .grid.one-third{width:100%;}
+.extra-content .custom-banner{padding:0 20px;}
+}

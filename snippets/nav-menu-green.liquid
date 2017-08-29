@@ -1,0 +1,55 @@
+<nav class="navbar navbar-green" role="navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-green-collapse">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+
+                <div class="collapse navbar-collapse navbar-green-collapse">
+                    <ul class="nav navbar-nav">
+                        {% for link in linklists.home-green-nav.links %}
+                            {% assign child_list_handle = link.title | handleize %}
+                            {% if linklists[child_list_handle].links != blank %}
+                                <li class="dropdown {{ link.handle }}">
+                                    <a href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown">{{ link.title }} <i class="fa fa-caret-down"></i></a>
+                                    <ul class="dropdown-menu">
+                                        {% for childlink in linklists[child_list_handle].links %}
+
+                                            {% assign dropdownClass = '' %}
+                                            {% if forloop.first == true %}
+                                                {% assign dropdownClass = 'first' %}
+                                            {% endif %}
+
+                                            {% if forloop.last == true %}
+                                                {% assign dropdownClass = 'last' %}
+                                            {% endif %}
+                                            
+                                            <li class="{{ dropdownClass }}{% if childlink.active %} nav-active{% endif %}">
+                                              <a href="{{ childlink.url }}">
+                                                {{ childlink.title | escape }}
+                                              </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% else %}
+                                <li {% if link.active %}class="active"{% endif %}>
+                                    <a href="{{ link.url }}">{{ link.title }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% if template != 'collection.fresh-meals' %}
+                    {% if template != 'collection.fresh-meals' %}
+                        {% include 'allergy-filter' %}
+                    {% endif %}        
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

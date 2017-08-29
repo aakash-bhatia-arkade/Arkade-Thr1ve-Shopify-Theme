@@ -1,0 +1,127 @@
+<!-- /templates/customers/account.liquid -->
+
+{% layout settings.customer_layout %}
+
+<div class="container" id="page-content">
+	<div class="row" id="page-title">
+		<div class="col-sm-12">
+			<h1>{{ 'customer.account.title' | t }}</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-3">
+			
+			<h4>{{ 'customer.account.details' | t }}</h4>
+			<h5>{{ customer.name }}</h5>
+
+{% if customer.metafields.subscriptions.customer_string %}
+<!--BeginRechargeCode-->
+<p><a href="/tools/recurring/customer/{{customer.metafields.subscriptions.customer_string}}/subscriptions/">Manage Subscriptions</a></p>
+<!--EndRechargeCode-->
+{% endif %}
+
+			<p>{{ 'Log out' | customer_logout_link }}</p>
+
+			{% if customer.default_address != nil %}
+			    <p>
+			    {{ customer.default_address.address1 }}<br>
+
+			    {% if customer.default_address.address2 != "" %}
+			    	{{ customer.default_address.address2 }}<br>
+			    {% endif %}
+
+			    {% if customer.default_address.city != "" %}
+			        {{ customer.default_address.city }}<br>
+			    {% endif %}
+
+			    {% if customer.default_address.province_code != "" %}
+			        {{ customer.default_address.province_code | upcase }}<br>
+			    {% endif %}
+
+			    {% if customer.default_address.zip != "" %}
+			        {{ customer.default_address.zip | upcase }}<br>
+			    {% endif %}
+
+			    {% if customer.default_address.country != "" %}
+			        {{ customer.default_address.country }}<br>
+			    {% endif %}
+
+			    {% if customer.default_address.phone != "" %}
+			        {{ customer.default_address.phone }}
+			    {% endif %}
+			    </p>
+			{% endif %}
+
+			<p><a href="/account/addresses">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a></p>
+
+		</div>
+
+		<div class="col-sm-9">
+			<h4>{{ 'customer.orders.title' | t }}</h4>
+
+			{% if customer.orders.size != 0 %}
+
+		      <div>
+		        <table class="table">
+		          <thead>
+		            <tr>
+		              <th>{{ 'customer.orders.order_number' | t }}</th>
+		              <th>{{ 'customer.orders.date' | t }}</th>
+		              <th>{{ 'customer.orders.payment_status' | t }}</th>
+		              <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+		              <th>{{ 'customer.orders.total' | t }}</th>
+		            </tr>
+		          </thead>
+		          <tbody>
+		            {% for order in customer.orders %}
+		              <tr>
+		                <td>{{ order.name | link_to: order.customer_url }}</td>
+		                <td>{{ order.created_at | date: format: 'month_day_year' }}</td>
+		                <td>{{ order.financial_status_label }}</td>
+		                <td>{{ order.fulfillment_status_label }}</td>
+		                <td>{{ order.total_price | money }}</td>
+		              </tr>
+		            {% endfor %}
+		          </tbody>
+		        </table>
+		      </div>
+
+		    {% else %}
+
+		      <p>{{ 'customer.orders.none' | t }}</p>
+
+		    {% endif %}
+		</div>
+		{{ 'account_custom.scss.css' | asset_url | stylesheet_tag }}
+              	<div id="account_subscriptions" class="col-sm-12">
+                  <h4>Active Meal Plans</h4>
+                  <ul id="active_subscriptions" data-customerId="{{ 'customer.id }}"></ul>
+        		</div>
+              	<template id="subscription_item">
+                    <div class="subscription_image" data-mealimage></div>
+                                                              <div class="subscription_details">
+                                                                  <h4 data-mealtitle>Wellbeing</h5>
+                                                                  <a  href="mailto:home@thr1ve.me" class="cancel_plan">Have question? Please contact us</a>
+                                                                  <div class="row">
+                                                                    <div class="col-xs-6 col-sm-3">
+                                                                      <h5>Deliveries Remaining</h5>
+                                                                      <p data-weeksremaining>2 of 4 weeks</p>
+                                                                    </div>
+                                                                    <div class="col-xs-6 col-sm-3">
+                                                                      <h5>Next Delivery Date</h5>
+                                                                      <p data-nextdelivery>Tuesday 14 March, 2017</p>
+                                                                    </div>
+                                                                    <div class="col-xs-6 col-sm-3">
+                                                                      <h5>Next Order Processing Date</h5>
+                                                                      <p data-nextpayment>Sunday 12 March, 2017</p>
+                                                                    </div>
+                                                                    <div class="col-xs-6 col-sm-3">
+                                                                      <h5>Wekly Subscription Amount</h5>
+                                                                      <p data-mealcost>$130 per week</p>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+              	</template>
+              	{{ 'account_subscriptions.js' | asset_url | script_tag }}
+	</div>
+</div>

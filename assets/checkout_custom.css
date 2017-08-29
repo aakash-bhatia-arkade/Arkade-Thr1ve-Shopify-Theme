@@ -1,0 +1,61 @@
+/* Shipping Method */
+.section--shipping-address-recap {
+	position: relative;
+}
+
+.section--shipping-address-recap > .section__header,
+.section--shipping-address-recap > .section__content {
+	background-color: #fafafa;
+}
+
+.section--shipping-address-recap > .section__header {
+	margin-bottom: 0;
+    padding: 20px 20px 5px 20px;
+    border-top: 1px solid #ddd;
+    border-radius: 5px 5px 0 0;
+    border-right: 1px solid #ddd;
+    border-bottom: 0px;
+    border-left: 1px solid #ddd;
+}
+
+.section--shipping-address-recap > .section__content {
+	padding: 5px 20px 20px 20px;
+    border-top: 0px;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-radius: 0 0 5px 5px;
+}
+
+.section--shipping-address-recap > .section__content .edit-link {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	padding-right: 20px;
+}
+
+/* Delivery */
+#shipping-delivering-to > .section__content {
+	background: #50b849;
+    color: #FFF;
+    border-radius: 5px;
+}
+
+#shipping-delivering-to > .section__content .content-box {
+	background: transparent;
+	color: inherit;
+	box-shadow: inherit;
+}
+
+#shipping-delivering-to > .section__content #delivering_to_zone {
+	display: inline-block;
+    width: 80%;
+    text-transform: capitalize;
+}
+
+#shipping-delivering-to > .section__content #delivering_to_cost {
+	display: inline-block;
+    width: 20%;
+    text-align: right;
+}
+

@@ -1,0 +1,19 @@
+{{ 'http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css' | stylesheet_tag }}
+{{ '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js' | script_tag }}
+ 
+<div style="width:500px; clear:both;">
+  <p>
+    <label for="date"><font color="#727272">Delivery date</font></label><BR>
+    <input id="date" type="text" name="attributes[date]" value="{{ cart.attributes.date }}" />
+    <span style="display:block" class="instructions"> <I><h5 style="font-size:10px">Please note : we need a minimum of 48 hours notice for large orders. <BR>That said, we'll of course do our best to accomodate last minute orders.</h5></i></span>
+  </p>
+</div>
+ 
+<script>
+jQuery(function() {
+  jQuery("#date").datepicker( { 
+    minDate: +1, 
+    maxDate: "+2M"
+  } );
+});
+</script>

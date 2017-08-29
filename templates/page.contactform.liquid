@@ -1,0 +1,76 @@
+<!-- snippets/page.contactform.liquid -->
+
+<img src="https://cdn.shopify.com/s/files/1/0640/8935/files/THR1VE_sayhello_c0eaba67-94a5-447c-b5bb-f393c281dbf7.jpg?5500211368436049708" width="100%" height="auto">
+
+<div class="container" id="page-content">
+	<div class="row" id="page-title">
+		<div class="col-sm-12">
+			
+		</div>
+	</div>
+	<div class="row">
+		<div class="{% if settings.enable_page_sidebar %}col-sm-9{% else %}col-sm-12{% endif %}">
+			
+			{{ page.content }}
+				
+			<div class="row">
+				<div class="col-sm-12">
+					{% form 'contact' %}
+					
+						{% if form.posted_successfully? %}
+						<p class="alert bg-success">{{ 'contact.form.post_success' | t }}</p>
+						{% endif %}
+						
+						{{ form.errors | default_errors }}
+						
+						<div class="form-group">
+							{% assign name_attr = 'contact.form.name' | t | handle %}
+					    	<label for="ContactFormName">{{ 'contact.form.name' | t }}</label>
+					    	<input type="text" id="ContactFormName" class="form-control" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.name' | t }}" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}">	    	
+						</div>
+						
+						<div class="form-group">
+					    	<label for="ContactFormEmail">{{ 'contact.form.email' | t }}</label>
+					    	<input type="email" id="ContactFormEmail" class="form-control" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">					    	
+						</div>
+						
+						<div class="form-group">
+							{% assign name_attr = 'contact.form.phone' | t | handle %}
+							<label for="ContactFormPhone">{{ 'contact.form.phone' | t }}</label>
+							<input type="tel" id="ContactFormPhone" class="form-control" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.phone' | t }}" pattern="[0-9\-]*" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+						</div>
+                  
+                  <div class="form-group">
+							{% assign name_attr = 'contact.form.enquiry' | t | handle %}
+							<label>Enquiry type : </label><BR>
+   <select id="contactFormQuestionType" name="contact[question type]">
+       <option>Catering</option>
+       <option>Feedback</option>
+     <option>Just sayin' hi...!</option>
+     <option>Franchising</option>
+     <option>Other</option>
+    
+     
+   </select>
+						</div>
+						
+                  
+						
+						<div class="form-group">
+					    	<label for="ContactFormMessage">{{ 'contact.form.message' | t }}</label>
+					    	<textarea rows="10" id="ContactFormMessage" class="form-control" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+						</div>
+						
+						<input type="submit" class="btn" value="{{ 'contact.form.send' | t }}">
+						
+					{% endform %}
+				</div>
+			</div>
+		</div>
+		
+		{% if settings.enable_page_sidebar %}
+			{% include 'page-sidebar' %}
+		{% endif %}
+		
+	</div>
+</div>

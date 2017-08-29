@@ -1,0 +1,25 @@
+<!-- snippets/search-results.liquid -->
+
+<div class="col-sm-12 search-results">
+	<div class="row">
+		{% if item.featured_image %}
+		<div class="col-sm-2 col-xs-3">
+			<a href="{{ item.url }}" title="{{ item.title | escape }}">
+				<img src="{{ item.featured_image.src | img_url: 'medium' }}" class="img-responsive" alt="{{ item.featured_image.alt }}">
+			</a>
+		</div>
+		{% endif %}
+		
+		<div class="col-sm-10 col-xs-9">
+			<h4><a href="">{{ item.title | link_to: item.url }}</a></h4>
+			{% if item.featured_image %}
+				{% if item.compare_at_price > item.price %}
+					<p>{{ item.price | money }} {{ 'products.product.compare_at' | t }} {{ item.compare_at_price_max | money }}</p>
+				{% else %}
+					<p>{{ item.price | money }}</p>
+				{% endif %}
+			{% endif %}
+			<p>{{ item.content | strip_html | truncatewords: 30 }}</p>
+		</div>
+	</div>
+</div>

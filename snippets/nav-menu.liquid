@@ -1,0 +1,80 @@
+<nav class="navbar navbar-custom" role="navigation">
+    <!--<div class="navbar-custom-inner">-->
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                            <i class="fa fa-bars"></i>
+                        </button>
+
+                        <a class="navbar-brand page-scroll" href="/">
+                            {% if settings.enable_custom_logo %}
+                                <img src="{{ 'logo-240.png' | asset_url }}" alt="{{ shop.name }}" class="logo-height">
+                            {% else %}
+                                <span>{{ shop.name }}</span>
+                            {% endif %}
+                        </a>
+
+                        {% if settings.enable_cart_checkout %}
+                            <a class="header-cart-icon header-cart-mobile visible-xs" href="javascript:void(0)">
+                                <i class="fa fa-shopping-cart"></i>
+                                Cart <span class="cart-count-wrap"><span class="cart-count"></span></span>
+                            </a>
+                        {% endif %}
+                    </div>
+
+                    <div class="collapse navbar-collapse navbar-main-collapse">
+                        <ul class="nav navbar-nav">
+                            {% for link in linklists.main-menu.links %}
+                                {% assign child_list_handle = link.title | handleize %}
+                                {% if linklists[child_list_handle].links != blank %}
+                                    <li class="dropdown {{ link.handle }}">
+                                        <a href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown">{{ link.title }} <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu">
+                                            {% for childlink in linklists[child_list_handle].links %}
+
+                                                {% assign dropdownClass = '' %}
+                                                {% if forloop.first == true %}
+                                                    {% assign dropdownClass = 'first' %}
+                                                {% endif %}
+
+                                                {% if forloop.last == true %}
+                                                    {% assign dropdownClass = 'last' %}
+                                                {% endif %}
+                                                
+                                                <li class="{{ dropdownClass }}{% if childlink.active %} nav-active{% endif %}">
+                                                  <a href="{{ childlink.url }}">
+                                                    {{ childlink.title | escape }}
+                                                  </a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% else %}
+                                    <li {% if link.active %}class="active"{% endif %}>
+                                        <a href="{{ link.url }}">{{ link.title }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                          <!-- <li><a href="http://thr1ve.referralcandy.com"><img src="https://cdn.shopify.com/s/files/1/1529/8583/files/referalbutton.png?13775542876053528646" width="180px" height ="40%" align="right"></a></li> -->  
+                          <li class="nav-search"><a href="/search"><i class="fa fa-search"></i></a></li>
+                            <!-- {% if shop.customer_accounts_enabled %}<li><a href="/account"><i class="fa fa-user"></i></a></li>{% endif %} -->
+                            <li class="nav-account"><a href="/account"><i class="fa fa-user"></i></a></li>
+                            {% if settings.enable_cart_checkout %}
+                                <li>
+                                    <a class="header-cart-icon hidden-xs" href="javascript:void(0)">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        Cart <span class="cart-count-wrap"><span class="cart-count"></span></span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!--</div>-->
+</nav>

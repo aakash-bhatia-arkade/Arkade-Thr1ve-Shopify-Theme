@@ -1,0 +1,32 @@
+<!-- snippets/product-list-item -->
+
+{% unless current_collection == blank %}
+	{% assign current_collection = collection %}
+{% endunless %}
+
+{% assign on_sale = false %}
+{% if product.compare_at_price > product.price %}
+	{% assign on_sale = true %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% if product.available  %}
+	{% assign sold_out = false %}
+{% endif %}
+
+<div class="col-xs-12 product-list">
+	<div class="row">
+		<div class="col-sm-2 col-xs-4">
+			<a href="{{ product.url | within: collection }}" class="product-list-image">
+				{% if on_sale %}<span class="onsale">Opening week special!</span>{% endif %}
+				{% if sold_out %}<span class="onsale">{{ 'products.product.sold_out' | t }}</span>{% endif %}
+				<img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}" class="img-responsive">
+			</a>
+		</div>
+		<div class="col-sm-10 col-xs-8">
+			<h5><a href="{{ product.url | within: collection }}">{{ product.title }}</a></h5>
+			<p>{% if on_sale %}<del>{{ product.compare_at_price | money }}</del>{% endif %}{{ product.price | money }}</p>
+			<p>{{ product.description | strip_html | truncate: 180 }}</p>
+		</div>
+	</div>
+</div>

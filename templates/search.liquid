@@ -1,0 +1,58 @@
+<!-- templates/search.liquid -->
+
+{% assign grid_results = false %}
+
+{% assign respond_js_secret_key = shop.domain | md5 %}
+{% unless search.terms == respond_js_secret_key %}
+
+<div class="container" id="page-content">
+	{% if search.performed %}
+	
+		{% paginate search.results by 10 %}
+		
+		{% if search.results_count == 0 %}
+			<div class="row" id="page-title">
+				<div class="col-md-12">
+					<h1 id="search-result-title">{{ 'general.search.no_results_html' | t: terms: search.terms }}</h1>
+				</div>
+			</div>
+		{% else %}
+			<div class="row" id="page-title">
+				<div class="col-md-12">
+					<h1 id="search-result-title">{{ 'general.search.results_for_html' | t: terms: search.terms }}</h1>
+				</div>
+			</div>
+
+			<div class="row">
+			{% for item in search.results %}
+                {% include 'search-result' %}
+            {% endfor %}
+			</div>
+            
+		{% endif %}
+		
+		{% if paginate.pages > 1 %}
+            {% include 'pagination-custom' %}
+		{% endif %}
+
+		{% endpaginate %}
+		
+	{% else %}
+		<div class="row" id="page-title">
+			<div class="col-md-12">
+				<h1>{{ 'general.search.title' | t }}</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				{% include 'search-bar' %}
+			</div>
+		</div>
+	{% endif %}
+			
+</div>
+	
+{% else %}
+  {% include 'respond' %}
+  {% layout none %}
+{% endunless %}	

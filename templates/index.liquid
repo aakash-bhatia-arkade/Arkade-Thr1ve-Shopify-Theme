@@ -1,0 +1,272 @@
+<!-- templates/index.html -->
+{{ 'custom-responsive.css' | asset_url | stylesheet_tag }}
+
+<div class="home-page">
+	<!-- {% include 'fresh-meals-anchor-nav' %} -->
+	<div class="how-it-works">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="title">HOW IT WORKS</div>
+			    	<div class="subtitle">Extraordinary health made deliciously simple</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="how-it-works-col">
+						<img src="https://cdn.shopify.com/s/files/1/1529/8583/files/00_1_2ef68c579b28586f0e92a374d88dc669.png" width="60px">
+				      	<h3>Beautifully balanced, fresh ready meals</h3>
+				      	<p>Chef designed &amp; nutritionist approved, <b>perfectly portioned</b> with all the good stuff, so you feel fuller for longer.</p>	
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="how-it-works-col">
+						<img src="https://cdn.shopify.com/s/files/1/1529/8583/files/00_2_0e6ecc85cee7b60dbe2fa6de682797b5.png" width="60px">
+			      	 	<h3>Delivered to your door, good to go</h3>
+			      	 	<p>Ready to eat in <u>2 minutes</u> in a pan, microwave or oven. Save time, money and make meal time effortless.</p>
+			      	 </div>
+				</div>
+				<div class="col-sm-4">
+					<div class="how-it-works-col">
+						<img src="https://cdn.shopify.com/s/files/1/1529/8583/files/00_3_fa1f3ee7afcd9db0c2eaf52613fccb30.png" width="60px">
+				      	<h3>Transforming how you look, feel &amp; perform</h3>
+				      	<p>Optimise body composition, health &amp; wellness, supported by our <a href="https://thr1ve.me/pages/protocol">8 week lifestyle plan.</a></p>
+			      	</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<a class="btn-link btn2" href="/collections/fresh-ready-meals">GET STARTED</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="collection-group">
+		<span class="anchor-offset" id="collection-lunchdinner"></span>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<h2>Lunch & Dinner</h2>
+				</div>
+			</div>
+			<div class="cg-products">
+				{% assign collection = collections.Lunch-Dinner %}
+			    <div class="row">
+				    {% for product in collection.products limit:4 %}
+				    	{% include 'product-grid-item', productPerRow: settings.product_per_row %}
+				    {% endfor %}
+			    </div>
+		    </div>
+		    <div class="row">
+		    	<div class="col-sm-12">
+		    		<div class="cg-footer">
+		    			<a class="btn-green" href="/collections/fresh-ready-meals/#collection-lunchdinner">View All</a>	
+		    		</div>
+		    	</div>
+		    </div>
+	    </div>
+    </div>
+    <div class="meal-plan-banner">
+		<div class="row">
+			<div class="col-sm-12">
+				<h3>Our Collections</h3>
+				<h4>Whether you're looking to lose weight, bulk up for simply have a detox week, we have a meal plan to suit you</h4>	
+			</div>
+		</div>
+		<div class="row small-gutter">
+			<div class="col-sm-4">
+				<a class="mp-banner-griditem" href="https://meals.thr1ve.me/collections/lean-light">
+					<img src="https://cdn.shopify.com/s/files/1/1529/8583/files/THR1VE_beautifullybalanced_f52a2dac-08f2-44d2-a590-bf6d5cfe9c96.jpg" width="100%">
+					<div class="mp-overlay">
+	   					<div>
+							<h3>Ultra Low Carb</h3>
+	   						<h4>Keto Friendly Collection</h4>	
+						</div>
+	   				</div>
+				</a>	
+			</div>
+			<div class="col-sm-4">
+				<a class="mp-banner-griditem" href="https://meals.thr1ve.me/collections/ultra-low-carb-keto-friendly">
+					<img src="https://cdn.shopify.com/s/files/1/1529/8583/files/THR1VE_leanandlight_7a5e1444-e6c8-4725-b704-7721589181ce.jpg" width="100%">
+					<div class="mp-overlay">
+						<div>
+							<h3>Light & Lean</h3>
+	   						<h4>Calorie controlled collection</h4>	
+						</div>
+	   				</div>
+				</a>
+			</div>
+	   		<div class="col-sm-4">
+	   			<a class="mp-banner-griditem" href="https://meals.thr1ve.me/collections/beautifully-balanced">
+	   				<img src="https://cdn.shopify.com/s/files/1/1529/8583/files/THR1VE_beautifullybalanced3_2a4bd6d7-8f43-4085-8916-ec5703388b7e.jpg" width="100%">
+	   				<div class="mp-overlay">
+	   					<div>
+							<h3>Beautifully Balanced</h3>
+	   						<h4>Smart carb collection</h4>	
+						</div>
+	   				</div>
+				</a>	
+	   		</div>
+	   	</div>
+	</div>
+	<div class="collection-group">
+		<span class="anchor-offset" id="collection-breakfast"></span>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<h2>Breakfast</h2>
+				</div>
+			</div>
+			<div class="cg-products">
+				{% assign collection = collections.breakfast %}
+			    <div class="row">
+				    {% for product in collection.products limit:4 %}
+				    	{% include 'product-grid-item', productPerRow: settings.product_per_row %}
+				    {% endfor %}
+			    </div>
+		    </div>
+		    <div class="row">
+		    	<div class="col-sm-12">
+		    		<div class="cg-footer">
+		    			<a class="btn-green" href="/collections/fresh-ready-meals/#collection-breakfast">View All</a>	
+		    		</div>
+		    	</div>
+		    </div>
+	    </div>
+    </div>
+    <div class="collection-group">
+    	<span class="anchor-offset" id="collection-snacks"></span>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<h2>Snacks</h2>
+				</div>
+			</div>
+			<div class="cg-products">
+				{% assign collection = collections.snacks %}
+			    <div class="row">
+				    {% for product in collection.products limit:4 %}
+				    	{% include 'product-grid-item', productPerRow: settings.product_per_row %}
+				    {% endfor %}
+			    </div>
+		    </div>
+		    <div class="row">
+		    	<div class="col-sm-12">
+		    		<div class="cg-footer">
+		    			<a class="btn-green" href="/collections/fresh-ready-meals/#collection-snacks">View All</a>	
+		    		</div>
+		    	</div>
+		    </div>
+	    </div>
+    </div>
+    <div class="collection-group">
+    	<span class="anchor-offset" id="collection-drinks"></span>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<h2>Drinks</h2>
+				</div>
+			</div>
+			<div class="cg-products">
+				{% assign collection = collections.drinks %}
+			    <div class="row">
+				    {% for product in collection.products limit:4 %}
+				    	{% include 'product-grid-item', productPerRow: settings.product_per_row %}
+				    {% endfor %}
+			    </div>
+		    </div>
+		    <div class="row">
+		    	<div class="col-sm-12">
+		    		<div class="cg-footer">
+		    			<a class="btn-green" href="/collections/fresh-ready-meals/#collection-drinks">View All</a>	
+		    		</div>
+		    	</div>
+		    </div>
+	    </div>
+    </div>
+    <div class="collection-group" style="display:none;">
+    	<span class="anchor-offset" id="collection-gifts"></span>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<h2>Gifts</h2>
+				</div>
+			</div>
+			<div class="cg-products">
+				{% assign collection = collections.gifts %}
+			    <div class="row">
+				    {% for product in collection.products limit:4 %}
+				    	{% include 'product-grid-item', productPerRow: settings.product_per_row %}
+				    {% endfor %}
+			    </div>
+		    </div>
+		    <div class="row">
+		    	<div class="col-sm-12">
+		    		<div class="cg-footer">
+		    			<a class="btn-green" href="/collections/fresh-ready-meals/#collection-breakfast">View All</a>	
+		    		</div>
+		    	</div>
+		    </div>
+	    </div>
+    </div>
+    {% include 'testimonial-carousel' %}
+</div>
+
+<script type="text/javascript">
+	(function($) {
+		$(function() {
+			//Filter Modal Window
+			$('#collection-filter-modal').on('show.bs.modal', function(event) {
+				var modal = $(this),
+					button = $(event.relatedTarget),
+					modalTitle = button.data('modalTitle'),
+					modalFooterFlag = button.data('modalFooterFlag'),
+					filterWrap = modal.find('.filter-wrap');
+					subCollectionsList = modal.find('.modal-list');
+
+				modal.find('.modal-header').remove();
+				modal.find('.modal-footer').remove();
+
+				title = '<div class="modal-header">'
+					        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+					        + '<h2 class="modal-title">'+ modalTitle +'</h2>'
+					      + '</div>';
+
+				subCollectionsList.before(title);
+				if(modalFooterFlag && typeof(modalFooterFlag) !== undefined)
+				{
+					footer = '<div class="modal-footer">'
+								+ '<a href="#" class="btn btn-primary filter-btn">Apply Filters</a>'
+							+ '</div>';
+					filterWrap.after(footer);
+				}
+			});
+
+			//Sort modal Window
+			$('#collection-sort-modal').on('show.bs.modal', function(event) {
+				var modal = $(this),
+					button = $(event.relatedTarget),
+					modalTitle = button.data('modalTitle'),
+					modalFooterFlag = button.data('modalFooterFlag'),
+					filterWrap = modal.find('#sort');
+
+				modal.find('.modal-header').remove();
+				modal.find('.modal-footer').remove();
+
+				title = '<div class="modal-header">'
+					        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+					        + '<h2 class="modal-title">'+ modalTitle +'</h2>'
+					      + '</div>';
+
+				filterWrap.before(title);
+				if(modalFooterFlag && typeof(modalFooterFlag) !== undefined)
+				{
+					footer = '<div class="modal-footer">'
+								+ '<button type="button" class="btn btn-primary">Sort</button>'
+							+ '</div>';
+					filterWrap.after(footer);
+				}
+			});
+		});
+	})(jQuery);
+</script>

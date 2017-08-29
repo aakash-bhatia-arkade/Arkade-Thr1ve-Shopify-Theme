@@ -1,0 +1,88 @@
+<!-- snippets/footer.liquid -->
+<div id="footer">
+	<div class="container">
+		<div class="postcode-validation {{ page.handle }}" id="postcode-footer-section">
+	        <div class="row">
+	            <div class="col-xs-12 col-sm-6">
+	                <div class="validation-icon hide-block">
+	                      {{ 'tick-icon.png' | asset_url | img_tag: '', 'icon' }}
+	                  </div>
+              		<div class="footer-truck">
+              			<span class="fa-stack fa-lg">
+						  <i class="fa fa-circle fa-stack-2x"></i>
+						  <i class="fa fa-truck fa-stack-1x fa-inverse"></i>
+						</span>	
+              		</div>
+	                {% include 'postcode-check-message-section' %}
+	            </div>
+	            <div class="col-xs-12 col-sm-6">
+	                {% include 'postcode-check-input-section', id:"footer" %}
+	            </div>
+	        </div>
+	  	</div>
+	  	<hr/>
+		<div class="row">
+			{% if settings.enable_first_link_list %}
+			<div class="col-lg-4 col-sm-4">
+				<h5>THR1VE</h5>
+				<ul class="list-unstyled">
+					{% for link in linklists[settings.first_link_list].links %}
+						<li><a href="{{ link.url }}">{{ link.title }}</a></li>
+					{% endfor %}
+				</ul>
+			</div>
+			{% endif %}
+			
+			{% if settings.enable_second_link_list %}
+			<div class="col-sm-2">
+				<h5>{{ linklists[settings.second_link_list].title }}</h5>
+				<ul class="list-unstyled">
+					{% for link in linklists[settings.second_link_list].links %}
+						<li><a href="{{ link.url }}">{{ link.title }}</a></li>
+					{% endfor %}
+				</ul>
+			</div>
+			{% endif %}
+			
+			{% if settings.footer_newsletter_enable %}
+				{% if settings.newsletter_form_action != blank %}
+					{% assign form_action = settings.newsletter_form_action %}
+				{% else %}
+					{% assign form_action = '#' %}
+				{% endif %}
+				
+				<div class="col-lg-4 col-sm-5">
+					<div class="newsletter-section">
+						<h5>{{ 'layout.footer.newsletter_title' | t }}</h5>
+						<form action="{{ form_action }}" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank" class="form-inline">
+							<div class="form-group">	
+								<input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="EMAIL" id="mail" class="form-control" aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" autocorrect="off" autocapitalize="off">
+							</div>
+							<button type="submit" class="btn" name="subscribe" id="subscribe" value="">{{ 'general.newsletter_form.submit' | t }}</button>
+						</form>
+					</div>
+				</div>
+			{% endif %}
+			
+			<div class="col-lg-4 col-sm-3">
+				{% include 'social-media' %}
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-xs-12" id="copy">
+				<p><small>Copyright {{ 'now' | date: "%Y" }} | <a href="http://one-theme.myshopify.com/" target="_blank">ONE - A Premium Shopify Theme</a> | <a href="http://www.shopify.com/?ref=sdj-entertainment">Powered By Shopify</a></small></p>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="footer-lower">
+	<!-- SnapWidget -->
+	<script src="https://snapwidget.com/js/snapwidget.js"></script>
+	<iframe src="https://snapwidget.com/embed/429880" class="snapwidget-widget" allowTransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:100%; "></iframe>
+</div>
+
+<!-- Start of thr1ve Zendesk Widget script -->
+<script>/*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var o=this.createElement("script");n&&(this.domain=n),o.id="js-iframe-async",o.src=e,this.t=+new Date,this.zendeskHost=t,this.zEQueue=a,this.body.appendChild(o)},o.write('<body onload="document._l();">'),o.close()}("https://assets.zendesk.com/embeddable_framework/main.js","thr1ve.zendesk.com");
+/*]]>*/</script>
+<!-- End of thr1ve Zendesk Widget script -->
