@@ -9,7 +9,8 @@
 				</div>
 			</div>
 			<div class="cg-products">
-				{% assign collection = collections.Light-Lean %}
+				{% comment %}{% assign collection = collections.Light-Lean %}{% endcomment %}
+				{% assign collection = collections.lean-light %}
 			    <div class="row">
 				    {% for product in collection.products %}
 				    	{% include 'product-grid-item', productPerRow: settings.product_per_row %}

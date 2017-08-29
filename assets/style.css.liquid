@@ -95,6 +95,12 @@ body.offside-js--is-open{
     transform: translate3d(-100%, 0, 0);
 }
 
+#slideInMenu .slideInMenuInner {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
 {% assign slideInMenuWidth = '500px' %}
 @media(min-width: 680px){
   
@@ -123,7 +129,7 @@ body.offside-js--is-open{
   }
 }
 
-
+/* mobile ajax cart fixes */
 #CartContainer{.
   position: relative;
   overflow: auto;
@@ -132,8 +138,8 @@ body.offside-js--is-open{
 
 @media (max-width: 1024px){
   #CartContainer{
-    overflow: scroll;
-      -webkit-overflow-scrolling: touch;
+    overflow-y: scroll !important;
+    -webkit-overflow-scrolling: auto;
   }
 }
 
@@ -664,7 +670,6 @@ button {outline: 0;}
   clear: both;
   font-weight: 300;
   line-height: 1.42857143;
-  color: #151515;
 }
 @media(max-width:767px){
   .navbar-green ul li {
@@ -1076,8 +1081,10 @@ ul.dropdown-menu div.submenu-content-wrap > .submenu-content a{
   border: 0px;
   padding: 0px;
 }
-.anchor-nav .btn-anchor:focus {
+.anchor-nav .btn-anchor:focus,
+.anchor-nav .btn-anchor:active {
   outline: none !important;
+  box-shadow: none !important;
 }
 .anchor-nav .btn-anchor ul li {
   display: none !important;
@@ -1127,6 +1134,7 @@ ul.dropdown-menu div.submenu-content-wrap > .submenu-content a{
     top: 46px;
     width: 100%;
     z-index: 99;
+    left: 0;
   }
   .anchor-nav ul.anchor-list li.collection-visible {
     display: none;
@@ -3093,6 +3101,8 @@ select#sortby {
 body, html{
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -webkit-overflow-scrolling: auto;
+    overflow-x: hidden;    
 }
 
 /* Hero Banner */

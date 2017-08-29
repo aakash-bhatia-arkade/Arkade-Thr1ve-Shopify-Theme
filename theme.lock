@@ -196,7 +196,7 @@ assets/snowflake.png:
 assets/storagePolyfill.js:
   development: 2017-08-25T14:38:01+10:00   ad52383ef07a9ef8b73a73960cab18c4
 assets/style.css.liquid:
-  development: 2017-08-29T12:41:24+10:00   7d599546bbb55a0e162452320b9b7cd0
+  development: 2017-08-29T13:01:45+10:00   7d599546bbb55a0e162452320b9b7cd0
 assets/style.css.liquid___jb_tmp___:
   development: '2017-08-25T14:38:01+10:00   '
 assets/thr1ve.woff:
@@ -220,7 +220,7 @@ config/settings_schema.json___jb_tmp___:
 layout/checkout.liquid:
   development: 2017-08-25T14:38:02+10:00   3df973530950602bed743f91dcbf1687
 layout/theme.liquid:
-  development: 2017-08-29T12:36:26+10:00   d245d3e9be2a2eb45463f73008d6f894
+  development: 2017-08-29T13:03:46+10:00   fe5a32b510b3b1f0ad4e00c191f91969
 layout/theme_copy_modify_lightbox.liquid:
   development: 2017-08-25T14:38:02+10:00   6ea6d532216988c2014f18e979723042
 locales/de.json:
@@ -386,11 +386,11 @@ templates/cart.liquid:
 templates/collection.beautifully-balanced.liquid:
   development: 2017-08-25T14:38:04+10:00   51eba9082f2a194dd9d58b142c407671
 templates/collection.fat-loss.liquid:
-  development: 2017-08-25T14:38:04+10:00   581e7c9c5683d56425645b8d72a68cf0
+  development: 2017-08-29T13:04:51+10:00   045c1da843842f058c9a962c71dba03d
 templates/collection.fresh-meals.liquid:
   development: 2017-08-25T14:38:04+10:00   4d4b8e276e08adbd491196b57f519a8c
 templates/collection.light-lean.liquid:
-  development: 2017-08-25T14:38:04+10:00   b22a2f75c38b5a88c240c4249679b100
+  development: 2017-08-29T13:05:46+10:00   90f2c89767fd5ce75fe0866269bd8bc5
 templates/collection.liquid:
   development: 2017-08-25T14:38:04+10:00   50d41f248203f8ff5e926f7673868015
 templates/collection.list.liquid:

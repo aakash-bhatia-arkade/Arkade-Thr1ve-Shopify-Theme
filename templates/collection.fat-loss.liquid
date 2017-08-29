@@ -9,7 +9,8 @@
 				</div>
 			</div>
 			<div class="cg-products">
-				{% assign collection = collections.Ultra-Low-Carb %}
+				{% comment %}{% assign collection = collections.Ultra-Low-Carb %}{% endcomment %}
+				{% assign collection = collections.ultra-low-carb-keto-friendly %}
 			    <div class="row">
 				    {% for product in collection.products %}
 				    	{% include 'product-grid-item', productPerRow: settings.product_per_row %}
