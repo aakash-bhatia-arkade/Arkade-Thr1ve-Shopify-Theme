@@ -220,7 +220,7 @@ config/settings_schema.json___jb_tmp___:
 layout/checkout.liquid:
   development: 2017-08-25T14:38:02+10:00   3df973530950602bed743f91dcbf1687
 layout/theme.liquid:
-  development: 2017-08-29T13:03:46+10:00   fe5a32b510b3b1f0ad4e00c191f91969
+  development: 2017-08-29T17:14:18+10:00   c50565d3bcdd88788cd77566815bcdf4
 layout/theme_copy_modify_lightbox.liquid:
   development: 2017-08-25T14:38:02+10:00   6ea6d532216988c2014f18e979723042
 locales/de.json:
@@ -303,10 +303,12 @@ snippets/header-postcode-validation.liquid:
   development: 2017-08-25T14:38:03+10:00   768d8117d58f29b22651173ebec1d0f9
 snippets/modify_lightbox_snippet.liquid:
   development: 2017-08-25T14:38:03+10:00   bd52b338eab333fb2547b623a4a12e52
+snippets/nav-menu-bottom.liquid:
+  development: 2017-08-29T17:04:16+10:00   f29f1f4472e44c490e6ac54a550030b0
 snippets/nav-menu-green.liquid:
-  development: 2017-08-25T14:38:03+10:00   07b632608ccb3f09c5f86853f351d27a
+  development: 2017-08-29T17:17:03+10:00   07b632608ccb3f09c5f86853f351d27a
 snippets/nav-menu.liquid:
-  development: 2017-08-25T16:44:28+10:00   a942306ac8e65c4cf084998357eeaeae
+  development: 2017-08-29T17:17:59+10:00   835fcebc2a32412e115bb0a8695a19a4
 snippets/old-browsers-warning.liquid:
   development: 2017-08-25T14:38:03+10:00   c54b02fd62f8d7e679b99524c87c5940
 snippets/oldIE-js.liquid:
